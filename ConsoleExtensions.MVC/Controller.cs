@@ -1,12 +1,9 @@
 ﻿namespace Demo
 {
 	using System;
-	using System.Collections.Generic;
-	using System.ComponentModel;
 	using System.Data.SqlTypes;
 	using System.Linq;
 	using System.Reflection;
-	using System.Text.RegularExpressions;
 
 	using ConsoleExtensions.Proxy;
 	using ConsoleExtensions.Templating;
@@ -150,131 +147,5 @@
 		{
 			Run(new T(), arguments, setup);
 		}
-	}
-
-	public class ModelMap
-	{
-		public ModelMap(object model)
-		{
-			PopulateFlags(model);
-			PopulateActions(model);
-		}
-
-		private void PopulateActions(object model)
-		{
-			var runtimeMethods = model.GetType().GetRuntimeMethods();
-			var methodInfos = GetNotOverloadedMethodInfos(runtimeMethods);
-			foreach (var method in methodInfos)
-			{
-				var action = new ModelAction(method.Name)
-					             {
-									 Source = model,
-									 Method = method,
-									 DisplayName = 	method.GetCustomAttribute<DisplayNameAttribute>()?.DisplayName ?? SplitCamelCase(method.Name),
-									 ShortcutKeys = method.GetCustomAttributes<ShortcutKeyAttribute>().Select(t => t.Key).ToArray()
-					             };
-				this.Actions.Add(action.Name, action);
-			}
-		}
-
-		private static IEnumerable<MethodInfo> GetNotOverloadedMethodInfos(IEnumerable<MethodInfo> runtimeMethods)
-		{
-			return runtimeMethods.Where(t => t.IsPublic && !t.IsSpecialName && !t.IsConstructor && t.DeclaringType != typeof(object)).ToLookup(info => info.Name).Where(t => t.Count() == 1).Select(t => t.First());
-		}
-
-		public void PopulateFlags(object model)
-		{
-			var propertyInfos = model.GetType().GetProperties();
-
-			foreach (var info in propertyInfos.Where(t => t.GetMethod.GetParameters().Length == 0))
-			{
-				var flag = new ModelFlag(info.Name)
-					           {
-								   Property = info,
-						           Source = model,
-						           DisplayName = info.GetCustomAttribute<DisplayNameAttribute>()?.DisplayName ?? SplitCamelCase(info.Name),
-						           ShortcutKeys = info.GetCustomAttributes<ShortcutKeyAttribute>().Select(t => t.Key).ToArray()
-					           };
-				this.Flags.Add(flag.Name, flag);
-			}
-		}
-
-		public Dictionary<string, ModelAction> Actions = new Dictionary<string, ModelAction>(StringComparer.InvariantCultureIgnoreCase);
-		public Dictionary<string, ModelFlag> Flags = new Dictionary<string, ModelFlag>(StringComparer.InvariantCultureIgnoreCase);
-
-		public static string SplitCamelCase(string str )
-		{
-			return Regex.Replace( 
-				Regex.Replace( 
-					str, 
-					@"(\P{Ll})(\P{Ll}\p{Ll})", 
-					"$1 $2" 
-				), 
-				@"(\p{Ll})(\P{Ll})", 
-				"$1 $2" 
-			);
-		}
-	}
-
-	[AttributeUsage(AttributeTargets.Property | AttributeTargets.Method, AllowMultiple = true, Inherited = true)]
-	public class ShortcutKeyAttribute : Attribute
-	{
-		public ConsoleKeyInfo Key { get; }
-
-		public ShortcutKeyAttribute(ConsoleKeyInfo key)
-		{
-			this.Key = key;
-		}
-
-		public ShortcutKeyAttribute(char c)
-		{
-			Key = new ConsoleKeyInfo(c, ConsoleKey.C, false,false,false);
-		}
-	}
-
-	public class ModelFlag
-	{
-		public ModelFlag(string name)
-		{
-			this.Name = name;
-		}
-
-		public string Name { get; private set; }
-
-		public object Source { get; set; }
-
-		public string DisplayName { get; set; }
-
-		public PropertyInfo Property { get; set; }
-
-		public ConsoleKeyInfo[] ShortcutKeys { get; set; }
-
-		public string CurrentValue()
-		{
-			return Property.GetMethod.Invoke(Source, new object[0]).ToString();
-		}
-
-		public void Set(string s)
-		{
-			Property.SetMethod.Invoke(Source, new []{Convert.ChangeType(s, Property.PropertyType) });
-		}
-	}
-
-	public class ModelAction
-	{
-		public MethodInfo Method { get; set; }
-
-		public ModelAction(string name)
-		{
-			this.Name = name;
-		}
-
-		public string Name { get; private set; }
-
-		public object Source { get; set; }
-
-		public string DisplayName { get; set; }
-
-		public ConsoleKeyInfo[] ShortcutKeys { get; set; }
 	}
 }
