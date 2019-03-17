@@ -1,17 +1,12 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <OutputType>Exe</OutputType>
-    <TargetFramework>netcoreapp2.2</TargetFramework>
+    <TargetFramework>netstandard2.0</TargetFramework>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="ConsoleExtensions.Proxy.ConsoleImplementation" Version="0.9.0-Dev" />
     <PackageReference Include="ConsoleExtensions.Templating" Version="0.9.1" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\ConsoleExtensions.MVC\ConsoleExtensions.MVC.csproj" />
   </ItemGroup>
 
 </Project>
