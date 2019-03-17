@@ -3,6 +3,7 @@
 	using System;
 	using System.Collections.Generic;
 	using System.ComponentModel;
+	using System.Data.SqlTypes;
 	using System.Linq;
 	using System.Reflection;
 	using System.Text.RegularExpressions;
@@ -170,7 +171,7 @@
 									 Source = model,
 									 Method = method,
 									 DisplayName = 	method.GetCustomAttribute<DisplayNameAttribute>()?.DisplayName ?? SplitCamelCase(method.Name),
-									 
+									 ShortcutKeys = method.GetCustomAttributes<ShortcutKeyAttribute>().Select(t => t.Key).ToArray()
 					             };
 				this.Actions.Add(action.Name, action);
 			}
@@ -191,7 +192,8 @@
 					           {
 								   Property = info,
 						           Source = model,
-						           DisplayName = info.GetCustomAttribute<DisplayNameAttribute>()?.DisplayName ?? SplitCamelCase(info.Name)
+						           DisplayName = info.GetCustomAttribute<DisplayNameAttribute>()?.DisplayName ?? SplitCamelCase(info.Name),
+						           ShortcutKeys = info.GetCustomAttributes<ShortcutKeyAttribute>().Select(t => t.Key).ToArray()
 					           };
 				this.Flags.Add(flag.Name, flag);
 			}
@@ -214,6 +216,22 @@
 		}
 	}
 
+	[AttributeUsage(AttributeTargets.Property | AttributeTargets.Method, AllowMultiple = true, Inherited = true)]
+	public class ShortcutKeyAttribute : Attribute
+	{
+		public ConsoleKeyInfo Key { get; }
+
+		public ShortcutKeyAttribute(ConsoleKeyInfo key)
+		{
+			this.Key = key;
+		}
+
+		public ShortcutKeyAttribute(char c)
+		{
+			Key = new ConsoleKeyInfo(c, ConsoleKey.C, false,false,false);
+		}
+	}
+
 	public class ModelFlag
 	{
 		public ModelFlag(string name)
@@ -228,6 +246,8 @@
 		public string DisplayName { get; set; }
 
 		public PropertyInfo Property { get; set; }
+
+		public ConsoleKeyInfo[] ShortcutKeys { get; set; }
 
 		public string CurrentValue()
 		{
@@ -254,5 +274,7 @@
 		public object Source { get; set; }
 
 		public string DisplayName { get; set; }
+
+		public ConsoleKeyInfo[] ShortcutKeys { get; set; }
 	}
 }

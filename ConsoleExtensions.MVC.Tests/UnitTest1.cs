@@ -3,6 +3,7 @@ using Xunit;
 
 namespace ConsoleExtensions.MVC.Tests
 {
+	using System.Linq;
 	using System.Text;
 
 	using Demo;
@@ -34,16 +35,26 @@ namespace ConsoleExtensions.MVC.Tests
 		[Fact]
 		public void Givengiven_Whenwhen_Thenthen()
 		{
-			var model = new Uri("https://github.com/oswaldsql/ConsoleExtensions.Templating");
+			var model = new demo();
 			
 			var modelMap = new ModelMap(model);
 
 			foreach (var flag in modelMap.Actions)
 			{
 				var value = flag.Value;
-				Console.WriteLine($"{value.Name}");
+
+				var keys = string.Join(" | ", value.ShortcutKeys.Select(t => t.KeyChar.ToString()));
+				Console.WriteLine($"[{keys}] {value.DisplayName}");
 			}
 		}
-
+		
+		public class demo
+		{
+			[ShortcutKey('1'), ShortcutKey('2')]
+			public string Tester()
+			{
+				return "";
+			}
+		}
 	}
 }
