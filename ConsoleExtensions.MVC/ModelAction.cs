@@ -19,5 +19,7 @@
 		public string DisplayName { get; set; }
 
 		public ConsoleKeyInfo[] ShortcutKeys { get; set; }
+
+		public string Description { get; set; }
 	}
 }

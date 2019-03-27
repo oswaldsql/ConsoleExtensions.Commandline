@@ -1,7 +1,6 @@
 ﻿namespace Demo
 {
 	using System;
-	using System.Data.SqlTypes;
 	using System.Linq;
 	using System.Reflection;
 
