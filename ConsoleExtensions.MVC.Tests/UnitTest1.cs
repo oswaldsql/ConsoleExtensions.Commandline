@@ -3,123 +3,144 @@ using Xunit;
 
 namespace ConsoleExtensions.MVC.Tests
 {
-	using System.Globalization;
-	using System.Linq;
-	using System.Text;
+    using Demo;
+    using System.Globalization;
+    using System.Linq;
+    using System.Text;
 
-	using Demo;
+    public class UnitTest1
+    {
+        [Fact]
+        public void Test1()
+        {
+            var model = new StringBuilder("https://github.com/oswaldsql/ConsoleExtensions.Templating");
 
-	public class UnitTest1
-	{
-		[Fact]
-		public void Test1()
-		{
-			var model = new StringBuilder("https://github.com/oswaldsql/ConsoleExtensions.Templating");
-			
-			var modelMap = new ModelMap(model);
+            var modelMap = new ModelMap(model);
 
-			foreach (var flag in modelMap.Flags)
-			{
-				var value = flag.Value;
-				Console.WriteLine($"-{value.Name} = {value.CurrentValue()}");
-			}
+            foreach (var flag in modelMap.Flags)
+            {
+                var value = flag.Value;
+                Console.WriteLine($"-{value.Name} = {value.CurrentValue()}");
+            }
 
-			modelMap.Flags["Capacity"].Set("100");
+            modelMap.Flags["Capacity"].Set("100");
 
-			foreach (var flag in modelMap.Flags)
-			{
-				var value = flag.Value;
-				Console.WriteLine($"-{value.Name} = {value.CurrentValue()}");
-			}
-		}
+            foreach (var flag in modelMap.Flags)
+            {
+                var value = flag.Value;
+                Console.WriteLine($"-{value.Name} = {value.CurrentValue()}");
+            }
+        }
 
-		[Fact]
-		public void Givengiven_Whenwhen_Thenthen()
-		{
-			var model = new demo();
-			
-			var modelMap = new ModelMap(model);
+        [Fact]
+        public void Givengiven_Whenwhen_Thenthen()
+        {
+            var model = new demo();
 
-			foreach (var flag in modelMap.Actions)
-			{
-				var value = flag.Value;
+            var modelMap = new ModelMap(model);
 
-				var keys = string.Join(" | ", value.ShortcutKeys.Select(t => t.KeyChar.ToString()));
-				Console.WriteLine($"[{keys}] {value.DisplayName}");
-			}
-		}
+            foreach (var flag in modelMap.Actions)
+            {
+                var value = flag.Value;
 
-		[Fact]
-		public void SetPropertiesTest()
-		{
-			// Arrange
-			CultureInfo.CurrentCulture = CultureInfo.InvariantCulture;
-			var actual = new SetPropertyTestObject();
-			var map = new ModelMap(actual);
+                var keys = string.Join(" | ", value.ShortcutKeys.Select(t => t.KeyChar.ToString()));
+                Console.WriteLine($"[{keys}] {value.DisplayName}");
+            }
+        }
 
-			// Act
-			map["StringValue"] = "test";
-			map["IntValue"] = "1234";
-			map["DateTimeValue"] = "2019-03-02";
-			map["DecimalValue"] = "123.456";
-			map["EnumValue"] = "Monday";
-			map["BoolValue"] = "true";
+        [Fact]
+        public void SetPropertiesTest()
+        {
+            // Arrange
+            CultureInfo.CurrentCulture = CultureInfo.InvariantCulture;
+            var actual = new SetPropertyTestObject();
+            var map = new ModelMap(actual);
 
-			// Assert
-			Assert.Equal("test", actual.StringValue);
-			Assert.Equal(1234, actual.IntValue);
-			Assert.Equal(new DateTime(2019,03,02), actual.DateTimeValue);
-			Assert.Equal((decimal)123.456, actual.DecimalValue);
-			Assert.Equal(DayOfWeek.Monday, actual.EnumValue);
-			Assert.True(actual.BoolValue);
-		}
+            // Act
+            map["StringValue"] = "test";
+            map["IntValue"] = "1234";
+            map["DateTimeValue"] = "2019-03-02";
+            map["DecimalValue"] = "123.456";
+            map["EnumValue"] = "Monday";
+            map["BoolValue"] = "true";
 
-		[Fact]
-		public void SetFlagsThroughCommandLine()
-		{
-			// Arrange
-			CultureInfo.CurrentCulture = CultureInfo.InvariantCulture;
-			var sut = new CallActionTestObject();
-			var map = new ModelMap(sut);
+            // Assert
+            Assert.Equal("test", actual.StringValue);
+            Assert.Equal(1234, actual.IntValue);
+            Assert.Equal(new DateTime(2019, 03, 02), actual.DateTimeValue);
+            Assert.Equal((decimal)123.456, actual.DecimalValue);
+            Assert.Equal(DayOfWeek.Monday, actual.EnumValue);
+            Assert.True(actual.BoolValue);
+        }
 
-			// Act
-			var actual = map.Invoke("ReturnSomeValue", "Monday");
+        [Fact]
+        public void SetFlagsThroughCommandLine()
+        {
+            // Arrange
+            CultureInfo.CurrentCulture = CultureInfo.InvariantCulture;
+            var sut = new CallActionTestObject();
+            var map = new ModelMap(sut);
 
-			// Assert
-			Assert.IsType<string>(actual);
-			Assert.Equal("yadnoM", actual);
-		}
+            // Act
+            var actual = map.Invoke("ReturnSomeValue", "Monday");
 
-		public class CallActionTestObject
-		{
-			public string ReturnSomeValue(DayOfWeek input1)
-			{
-				return new string(input1.ToString().Reverse().ToArray());
-			}
-		}
+            // Assert
+            Assert.IsType<string>(actual);
+            Assert.Equal("yadnoM", actual);
+        }
 
-		public class SetPropertyTestObject
-		{
-			public string StringValue { get; set; }
+        public class CallActionTestObject
+        {
+            public string ReturnSomeValue(DayOfWeek input1)
+            {
+                return new string(input1.ToString().Reverse().ToArray());
+            }
+        }
 
-			public int IntValue { get; set; }
+        public class SetPropertyTestObject
+        {
+            public string StringValue { get; set; }
 
-			public Decimal DecimalValue { get; set; }
+            public int IntValue { get; set; }
 
-			public DateTime DateTimeValue { get; set; }
+            public Decimal DecimalValue { get; set; }
 
-			public DayOfWeek EnumValue { get; set; }
+            public DateTime DateTimeValue { get; set; }
 
-			public bool BoolValue { get; set; }
-		}
+            public DayOfWeek EnumValue { get; set; }
 
-		public class demo
-		{
-			[ShortcutKey('1'), ShortcutKey('2')]
-			public string TestToSeHowThisIsSplit()
-			{
-				return "";
-			}
-		}
-	}
+            public bool BoolValue { get; set; }
+        }
+
+        public class demo
+        {
+            [ShortcutKey('1'), ShortcutKey('2')]
+            public string TestToSeHowThisIsSplit()
+            {
+                return "";
+            }
+        }
+    }
+
+    public class ArgumentParserTests
+    {
+	    [Fact]
+	    public void Givengiven_Whenwhen_Thenthen()
+	    {
+		    // Arrange
+		    var parser = new ArgumentParser();
+
+		    // Act
+		    var arguments = parser.Parse("command", "arg1", "arg2", "arg3", "-param1", "-param2", "singleparamvalue", "-param3", "multiparamvalue1", "multiparamvalue2", "multiparamvalue3");
+
+		    // Assert
+		    var arg = string.Join(" , ", arguments.Arguments);
+		    Console.WriteLine($"{arguments.Command} ({arg})");
+		    foreach (var property in arguments.Properties)
+		    {
+			    Console.WriteLine($"{property.Key} = {string.Join(" , ", property.Value)}");
+		    }
+
+	    }
+    }
 }

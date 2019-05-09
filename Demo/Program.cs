@@ -8,7 +8,7 @@ namespace Demo
 	{
 		static void Main(string[] args)
 		{
-			Controller.Run<DemoObject>(args, Setup);
+			Controller.Run<DemoObject>(args, Settings.Default);
 
 			Console.ReadLine();
 		}
@@ -18,6 +18,13 @@ namespace Demo
 			setup
 				.ViewFor<Exception>("[s:Error]{Message}[/]")
 				.ViewFor<FileNotFoundException>("[s:Error][if:FileName]Unable to find : '{FileName}'[/][ifnot:FileName]{Message}[/][/]");
+		}
+	}
+
+	public class Settings
+	{
+		public static void Default(ControllerSettings setup)
+		{
 		}
 	}
 }

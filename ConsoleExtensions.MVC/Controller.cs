@@ -20,7 +20,8 @@
 			this.source = source;
 		}
 
-		public static Controller Init<T>() where T:new()
+		public static Controller Init<T>()
+			where T : new()
 		{
 			return new Controller(new T());
 		}
@@ -42,10 +43,10 @@
 			while (indexOfFlag > -1)
 			{
 				var name = args[indexOfFlag].Substring(1);
-				var stringValue = args[indexOfFlag+1];
+				var stringValue = args[indexOfFlag + 1];
 
 				args[indexOfFlag] = null;
-				args[indexOfFlag+1] = null;
+				args[indexOfFlag + 1] = null;
 
 				var propertyInfo = propertyInfos.FirstOrDefault(p => p.Name.Equals(name) || p.Name.Equals(name, StringComparison.InvariantCultureIgnoreCase));
 				if (propertyInfo != null && propertyInfo.CanWrite)
@@ -53,7 +54,8 @@
 					propertyInfo.SetMethod.Invoke(this.source, new[]
 						                                           {
 							                                           Convert.ChangeType(stringValue, propertyInfo.PropertyType)
-						                                           });}
+						                                           });
+				}
 
 				indexOfFlag = this.FindIndexOfFlag(args);
 			}
@@ -63,7 +65,7 @@
 		{
 			for (int i = 0; i < args.Length; i++)
 			{
-				if (args[i]!= null && args[i].StartsWith("-")) return i;
+				if (args[i] != null && args[i].StartsWith("-")) return i;
 			}
 
 			return -1;
@@ -84,12 +86,12 @@
 		private void FindAction(ref string[] args)
 		{
 			var firstOrDefault = args.FirstOrDefault();
-			if(firstOrDefault == null || firstOrDefault.StartsWith("-")) return;
+			if (firstOrDefault == null || firstOrDefault.StartsWith("-")) return;
 
 			var runtimeMethods = this.source.GetType().GetRuntimeMethods();
 			var bestMatchMethod = runtimeMethods.FirstOrDefault(info => info.IsPublic && (info.Name.Equals(firstOrDefault) || info.Name.Equals(firstOrDefault, StringComparison.InvariantCultureIgnoreCase)));
 
-			if(bestMatchMethod == null) return;
+			if (bestMatchMethod == null) return;
 
 			args[0] = null;
 
@@ -142,7 +144,8 @@
 			setup.Proxy(ConsoleProxy.Instance());
 		}
 
-		public static void Run<T>(string[] arguments, Action<ControllerSettings> setup = null) where T : new()
+		public static void Run<T>(string[] arguments, Action<ControllerSettings> setup = null)
+			where T : new()
 		{
 			Run(new T(), arguments, setup);
 		}
