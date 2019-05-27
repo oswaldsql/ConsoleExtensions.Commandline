@@ -1,12 +1,20 @@
 ﻿namespace ConsoleExtensions.Commandline.Demo
 {
-	public class DemoObject
-	{
-		public string DoSomething(int number)
-		{
-			return (number + Root).ToString();
-		}
+    using System.ComponentModel;
 
-		public int Root { get; set; }
-	}
+    public class DemoObject
+    {
+        public int Root { get; set; }
+
+        [Description("This just adds two numbers")]
+        public string DoSomething(int number)
+        {
+            return (number + this.Root).ToString();
+        }
+
+        public string SomethingComplicated(string first, int notFirst)
+        {
+            return "";
+        }
+    }
 }
