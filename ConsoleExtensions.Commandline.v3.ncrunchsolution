@@ -1,6 +1,10 @@
 ﻿<SolutionConfiguration>
   <Settings>
     <AllowParallelTestExecution>True</AllowParallelTestExecution>
+    <MetricsExclusionList>
+      <Value>ConsoleExtensions.Commandline.Tests\ConsoleExtensions.Commandline.Tests.csproj</Value>
+      <Value>ConsoleExtensions.Commandline.Demo\ConsoleExtensions.Commandline.Demo.csproj</Value>
+    </MetricsExclusionList>
     <SolutionConfigured>True</SolutionConfigured>
   </Settings>
 </SolutionConfiguration>

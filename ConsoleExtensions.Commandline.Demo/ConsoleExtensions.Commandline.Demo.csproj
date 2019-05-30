@@ -10,4 +10,8 @@
     <PlatformTarget>x64</PlatformTarget>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\ConsoleExtensions.Commandline\ConsoleExtensions.Commandline.csproj" />
+  </ItemGroup>
+
 </Project>
