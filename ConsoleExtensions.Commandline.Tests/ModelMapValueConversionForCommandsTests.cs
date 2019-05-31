@@ -2,6 +2,7 @@ namespace ConsoleExtensions.Commandline.Tests
 {
     using System;
 
+    using ConsoleExtensions.Commandline.Exceptions;
     using ConsoleExtensions.Commandline.Parser;
 
     using Xunit;

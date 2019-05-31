@@ -44,10 +44,9 @@ namespace ConsoleExtensions.Commandline.Parser
         /// </summary>
         /// <param name="option">The option name.</param>
         /// <returns>A string representing the options value.</returns>
-        /// <exception cref="System.ArgumentException">
-        ///     Thrown if the option is not found or the value can not be converted to the options type.
-        /// </exception>
         /// <exception cref="InvalidArgumentFormatException" accessor="set">Thrown if the value conversation failed.</exception>
+        /// <exception cref="UnknownOptionException" accessor="get">Thrown is the specified option is not known.</exception>
+        /// <exception cref="UnknownOptionException" accessor="set">Thrown is the specified option is not known.</exception>
         public string this[string option]
         {
             get
@@ -68,7 +67,7 @@ namespace ConsoleExtensions.Commandline.Parser
                 }
                 else
                 {
-                    throw new ArgumentException();
+                    throw new UnknownOptionException(option, this.Options.Values);
                 }
             }
         }
@@ -103,6 +102,9 @@ namespace ConsoleExtensions.Commandline.Parser
         /// <returns>The result of the method as a object.</returns>
         /// <exception cref="UnknownCommandException">Thrown is the command in not known.</exception>
         /// <exception cref="System.ArgumentException">Invalid argument</exception>
+        /// <exception cref="TooManyArgumentsException">Thrown is too many arguments was specified.</exception>
+        /// <exception cref="MissingArgumentException">Thrown is one or more arguments was missing.</exception>
+        /// <exception cref="InvalidParameterFormatException">Thrown is the specified value of a argument is not valid for that type.</exception>
         public object Invoke(string command, params string[] arguments)
         {
             if (!this.Commands.TryGetValue(command, out var method))
@@ -132,7 +134,7 @@ namespace ConsoleExtensions.Commandline.Parser
                     }
                     else
                     {
-                        throw new MissingArgumentException(info.Name, infos.Select(s => s.Name).ToArray());
+                        throw new MissingArgumentException(command, info.Name, infos.Select(s => s.Name).ToArray());
                     }
                 }
                 else
@@ -145,7 +147,7 @@ namespace ConsoleExtensions.Commandline.Parser
                         }
                         catch (Exception e)
                         {
-                            throw new InvalidParameterFormatException(arguments[index], info);
+                            throw new InvalidParameterFormatException(arguments[index], info, e);
                         }
                     }
                     else
@@ -156,7 +158,7 @@ namespace ConsoleExtensions.Commandline.Parser
                         }
                         catch (Exception e)
                         {
-                            throw new InvalidParameterFormatException(arguments[index], info);
+                            throw new InvalidParameterFormatException(arguments[index], info, e);
                         }
                     }
                 }

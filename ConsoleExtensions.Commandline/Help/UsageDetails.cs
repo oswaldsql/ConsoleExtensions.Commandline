@@ -18,6 +18,11 @@ namespace ConsoleExtensions.Commandline.Help
         public ArgumentDetails[] Arguments { get; set; }
 
         /// <summary>
+        ///     Gets or sets the description.
+        /// </summary>
+        public string Description { get; set; }
+
+        /// <summary>
         ///     Gets or sets the display name.
         /// </summary>
         public string DisplayName { get; set; }
@@ -31,7 +36,5 @@ namespace ConsoleExtensions.Commandline.Help
         ///     Gets or sets the type of the return.
         /// </summary>
         public string ReturnType { get; set; }
-
-        public string Description { get; set; }
     }
 }

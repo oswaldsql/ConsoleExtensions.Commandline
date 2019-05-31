@@ -20,21 +20,22 @@ namespace ConsoleExtensions.Commandline.Exceptions
         /// <summary>
         ///     Initializes a new instance of the <see cref="InvalidArgumentFormatException" /> class.
         /// </summary>
-        /// <param name="stringValue">The string value the user tried to set.</param>
+        /// <param name="value">The string value the user tried to set.</param>
         /// <param name="property">The property that was attempted to be set.</param>
         /// <param name="innerException">The inner exception.</param>
-        public InvalidArgumentFormatException(string stringValue, PropertyInfo property, Exception innerException)
-            : base($"Invalid argument format. '{property.Name}' can not be set to '{stringValue}'", innerException)
+        public InvalidArgumentFormatException(string value, PropertyInfo property, Exception innerException)
+            : base($"Invalid argument format. '{property.Name}' can not be set to '{value}'", innerException)
         {
-            this.StringValue = stringValue;
+            this.Value = value;
             this.Property = property;
-            this.Type = property.PropertyType;
+            this.Type = property.PropertyType.Name;
             this.Name = property.Name;
         }
 
-        public string Name { get; set; }
-
-        public Type Type { get; set; }
+        /// <summary>
+        ///     Gets the name od the property that was set.
+        /// </summary>
+        public string Name { get; }
 
         /// <summary>
         ///     Gets the property that was attempted to be set.
@@ -44,6 +45,11 @@ namespace ConsoleExtensions.Commandline.Exceptions
         /// <summary>
         ///     Gets the string value the user tried to set.
         /// </summary>
-        public string StringValue { get; }
+        public string Value { get; }
+
+        /// <summary>
+        ///     Gets the type of the property that was set.
+        /// </summary>
+        public string Type { get;  }
     }
 }

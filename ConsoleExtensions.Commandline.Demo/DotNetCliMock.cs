@@ -1,4 +1,9 @@
-﻿namespace ConsoleExtensions.Commandline.Demo
+﻿// ReSharper disable StyleCop.SA1600
+// ReSharper disable UnusedMember.Global
+// ReSharper disable UnusedParameter.Global
+// ReSharper disable StyleCop.SA1201
+// ReSharper disable StyleCop.SA1602
+namespace ConsoleExtensions.Commandline.Demo
 {
     using System.ComponentModel;
 

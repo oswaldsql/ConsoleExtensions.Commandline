@@ -81,7 +81,6 @@ namespace ConsoleExtensions.Commandline.Help
                     helpDetails.Usage = details;
                     helpDetails.Options = map.Options.Values.ToArray();
                 }
-
             }
             else
             {
