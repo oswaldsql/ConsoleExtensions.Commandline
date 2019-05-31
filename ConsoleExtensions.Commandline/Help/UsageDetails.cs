@@ -31,5 +31,7 @@ namespace ConsoleExtensions.Commandline.Help
         ///     Gets or sets the type of the return.
         /// </summary>
         public string ReturnType { get; set; }
+
+        public string Description { get; set; }
     }
 }

@@ -59,12 +59,29 @@ namespace ConsoleExtensions.Commandline.Help
                                       {
                                           Name = command.Name,
                                           DisplayName = command.DisplayName,
+                                          Description = command.Description,
                                           ReturnType = command.Method.ReturnType.Name,
                                           Arguments = command.Method.GetParameters().Select(this.Map).ToArray()
                                       };
 
                     helpDetails.Usage = details;
+                    helpDetails.Options = map.Options.Values.ToArray();
                 }
+                else
+                if (map.Options.TryGetValue(topic, out var option))
+                {
+                    var details = new UsageDetails
+                                      {
+                                          Name = option.Name,
+                                          DisplayName = option.DisplayName,
+                                          Description = option.Description,
+                                          ReturnType = option.Property.PropertyType.Name,
+                                      };
+
+                    helpDetails.Usage = details;
+                    helpDetails.Options = map.Options.Values.ToArray();
+                }
+
             }
             else
             {
