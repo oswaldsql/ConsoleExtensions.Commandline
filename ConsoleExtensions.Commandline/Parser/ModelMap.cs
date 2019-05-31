@@ -57,7 +57,7 @@ namespace ConsoleExtensions.Commandline.Parser
                     return p.CurrentValue();
                 }
 
-                throw new ArgumentException();
+                throw new UnknownOptionException(option, this.Options.Values);
             }
 
             set
@@ -111,6 +111,12 @@ namespace ConsoleExtensions.Commandline.Parser
             }
 
             var infos = method.Method.GetParameters();
+
+            if (infos.Length < arguments.Length)
+            {
+                throw new TooManyArgumentsException(infos.Select(s => s.Name).ToArray());
+            }
+
             var p = new List<object>();
             for (var index = 0; index < infos.Length; index++)
             {
@@ -118,15 +124,29 @@ namespace ConsoleExtensions.Commandline.Parser
 
                 object o;
 
-                if (arguments.Length <= index && info.HasDefaultValue)
+                if (arguments.Length <= index)
                 {
-                    o = info.DefaultValue;
+                    if (info.HasDefaultValue)
+                    {
+                        o = info.DefaultValue;
+                    }
+                    else
+                    {
+                        throw new MissingArgumentException(info.Name, infos.Select(s => s.Name).ToArray());
+                    }
                 }
                 else
                 {
                     if (info.ParameterType.IsEnum)
                     {
-                        o = Enum.Parse(info.ParameterType, arguments[index], true);
+                        try
+                        {
+                            o = Enum.Parse(info.ParameterType, arguments[index], true);
+                        }
+                        catch (Exception e)
+                        {
+                            throw new InvalidParameterFormatException(arguments[index], info);
+                        }
                     }
                     else
                     {
@@ -136,7 +156,7 @@ namespace ConsoleExtensions.Commandline.Parser
                         }
                         catch (Exception e)
                         {
-                            throw new ArgumentException("Invalid argument", infos[index].Name, e);
+                            throw new InvalidParameterFormatException(arguments[index], info);
                         }
                     }
                 }

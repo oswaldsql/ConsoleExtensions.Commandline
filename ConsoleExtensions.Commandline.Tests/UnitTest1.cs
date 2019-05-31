@@ -1,6 +1,9 @@
 namespace ConsoleExtensions.Commandline.Tests
 {
-    using System;
+    using System.Linq;
+    using System.Reflection.Metadata;
+
+    using ConsoleExtensions.Commandline.Exceptions;
 
     public class UnitTest1
     {

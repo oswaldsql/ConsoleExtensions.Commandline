@@ -28,7 +28,13 @@ namespace ConsoleExtensions.Commandline.Exceptions
         {
             this.StringValue = stringValue;
             this.Property = property;
+            this.Type = property.PropertyType;
+            this.Name = property.Name;
         }
+
+        public string Name { get; set; }
+
+        public Type Type { get; set; }
 
         /// <summary>
         ///     Gets the property that was attempted to be set.
