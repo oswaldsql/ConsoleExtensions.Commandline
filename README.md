@@ -40,4 +40,4 @@ Will give you a commandline interface with the following options.
 - **dotnet demo.dll Help copy**  will display help for the copy command
 - **dotnet demo.dll Copy \*.png -SourceFolder "somePics" -TargetFolder "otherPics"** will invoke the copy method
 
-![Toolbox](Documentation/ToolBox.png)
+![Toolbox](Documentation/ToolBox.PNG)
