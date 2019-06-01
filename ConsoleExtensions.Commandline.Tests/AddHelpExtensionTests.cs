@@ -1,3 +1,6 @@
+// ReSharper disable ExceptionNotDocumented
+// ReSharper disable StyleCop.SA1600
+
 namespace ConsoleExtensions.Commandline.Tests
 {
     using System.ComponentModel;
@@ -23,53 +26,6 @@ namespace ConsoleExtensions.Commandline.Tests
             Assert.Equal("Custom help", actual);
         }
 
-
-        [Fact]
-        public void GivenAModel_WhenCallingHelpWithoutTopic_ThenHelpForFullModelShouldBeReturned()
-        {
-            // Arrange
-            var controller = new Controller(new Mock(), c => c.AddHelp());
-
-            // Act
-            var actual = controller.ModelMap.Invoke("Help") as HelpDetails;
-
-            // Assert
-            Assert.Null(actual.Usage);
-            Assert.Equal("MockModel", actual.ModelName);
-            Assert.Equal("1.0.0.0", actual.ModelVersion.ToString());
-            Assert.Equal("Describe Mock Model", actual.Description);
-            Assert.Contains(actual.Commands, command => command.Name == "Help");
-            Assert.Contains(actual.Commands, command => command.Name == "Command");
-            Assert.Contains(actual.Options, option => option.Name == "Option");
-        }
-        
-        [Fact]
-        public void GivenAModel_WhenCallingHelpWithCommandTopic_ThenHelpShouldContainTheRightUsageInformation()
-        {
-            // Arrange
-            var controller = new Controller(new Mock(), c => c.AddHelp());
-
-            // Act
-            var actual = controller.ModelMap.Invoke("Help", "Command") as HelpDetails;
-
-            // Assert
-            var usage = actual.Usage;
-            Assert.NotNull(usage);
-            Assert.Equal("Command",usage.Name);
-            Assert.Equal("String", usage.ReturnType);
-            Assert.Equal("Command", usage.DisplayName);
-            Assert.Equal(2, usage.Arguments.Length);
-
-            var first = usage.Arguments.First();
-            var firstExpected = new ArgumentDetails() {Name = "argument", Type = "String"};
-            Assert.Equal(firstExpected, first, new DetailsComparer());
-
-            var second = usage.Arguments[1];
-            var secondExpected = new ArgumentDetails() {Name = "optional", Type = "String", DisplayName = "Optional value", Description = "Some description", Optional = true, DefaultValue = "default"};
-            Assert.Equal(secondExpected, second, new DetailsComparer());
-        }
-
-
         [Fact]
         public void GivenAModel_WhenCallingHelpWithCommandTopic_ThenHelpShouldContainModelMetadata()
         {
@@ -80,8 +36,60 @@ namespace ConsoleExtensions.Commandline.Tests
             var actual = controller.ModelMap.Invoke("Help", "Command") as HelpDetails;
 
             // Assert
-            Assert.NotNull(actual.Usage);
+            Assert.NotNull(actual?.Usage);
 
+            Assert.Equal("MockModel", actual.ModelName);
+            Assert.Equal("1.0.0.0", actual.ModelVersion.ToString());
+            Assert.Equal("Describe Mock Model", actual.Description);
+            Assert.Null(actual.Commands);
+            Assert.Contains(actual.Options, option => option.Name == "Option");
+        }
+
+        [Fact]
+        public void GivenAModel_WhenCallingHelpWithCommandTopic_ThenHelpShouldContainTheRightUsageInformation()
+        {
+            // Arrange
+            var controller = new Controller(new Mock(), c => c.AddHelp());
+
+            // Act
+            var actual = controller.ModelMap.Invoke("Help", "Command") as HelpDetails;
+
+            // Assert
+            var usage = actual?.Usage;
+            Assert.NotNull(usage);
+            Assert.Equal("Command", usage.Name);
+            Assert.Equal("String", usage.ReturnType);
+            Assert.Equal("Command", usage.DisplayName);
+            Assert.Equal(2, usage.Arguments.Length);
+
+            var first = usage.Arguments.First();
+            var firstExpected = new ArgumentDetails { Name = "argument", Type = "String" };
+            Assert.Equal(firstExpected, first, new DetailsComparer());
+
+            var second = usage.Arguments[1];
+            var secondExpected = new ArgumentDetails
+                                     {
+                                         Name = "optional",
+                                         Type = "String",
+                                         DisplayName = "Optional value",
+                                         Description = "Some description",
+                                         Optional = true,
+                                         DefaultValue = "default"
+                                     };
+            Assert.Equal(secondExpected, second, new DetailsComparer());
+        }
+
+        [Fact]
+        public void GivenAModel_WhenCallingHelpWithOptionTopic_ThenHelpForThatOptionShouldBeReturned()
+        {
+            // Arrange
+            var controller = new Controller(new Mock(), c => c.AddHelp());
+
+            // Act
+            var actual = controller.ModelMap.Invoke("Help", "Option") as HelpDetails;
+
+            // Assert
+            Assert.NotNull(actual?.Usage);
             Assert.Equal("MockModel", actual.ModelName);
             Assert.Equal("1.0.0.0", actual.ModelVersion.ToString());
             Assert.Equal("Describe Mock Model", actual.Description);
@@ -99,14 +107,14 @@ namespace ConsoleExtensions.Commandline.Tests
             var actual = controller.ModelMap.Invoke("Help", "Option") as HelpDetails;
 
             // Assert
-            Assert.NotNull(actual.Usage);
+            Assert.NotNull(actual?.Usage);
             Assert.Equal("MockModel", actual.ModelName);
             Assert.Equal("1.0.0.0", actual.ModelVersion.ToString());
             Assert.Equal("Describe Mock Model", actual.Description);
             Assert.Null(actual.Commands);
             Assert.Contains(actual.Options, option => option.Name == "Option");
         }
-        
+
         [Fact]
         public void GivenAModel_WhenCallingHelpWithOptionTopic_ThenHelpShouldContainTheRightUsageInformation()
         {
@@ -127,34 +135,23 @@ namespace ConsoleExtensions.Commandline.Tests
         }
 
         [Fact]
-        public void GivenAModel_WhenCallingHelpWithOptionTopic_ThenHelpForThatOptionShouldBeReturned()
+        public void GivenAModel_WhenCallingHelpWithoutTopic_ThenHelpForFullModelShouldBeReturned()
         {
             // Arrange
             var controller = new Controller(new Mock(), c => c.AddHelp());
 
             // Act
-            var actual = controller.ModelMap.Invoke("Help", "Option") as HelpDetails;
+            var actual = controller.ModelMap.Invoke("Help") as HelpDetails;
 
             // Assert
-            Assert.NotNull(actual.Usage);
+            Assert.NotNull(actual);
+            Assert.Null(actual.Usage);
             Assert.Equal("MockModel", actual.ModelName);
             Assert.Equal("1.0.0.0", actual.ModelVersion.ToString());
             Assert.Equal("Describe Mock Model", actual.Description);
-            Assert.Null(actual.Commands);
+            Assert.Contains(actual.Commands, command => command.Name == "Help");
+            Assert.Contains(actual.Commands, command => command.Name == "Command");
             Assert.Contains(actual.Options, option => option.Name == "Option");
-        }
-
-        [DisplayName("MockModel")]
-        [Description("Describe Mock Model")]
-        public class Mock
-        {
-            [DisplayName("First Option"), Description("The first option.")]
-            public string Option { get; set; }
-
-            public string Command(string argument, [DisplayName("Optional value"), Description("Some description")]string optional = "default")
-            {
-                return argument;
-            }
         }
 
         public class ClassWithExistingHelp
@@ -162,6 +159,23 @@ namespace ConsoleExtensions.Commandline.Tests
             public string Help(string topic)
             {
                 return "Custom help";
+            }
+        }
+
+        [DisplayName("MockModel")]
+        [Description("Describe Mock Model")]
+        public class Mock
+        {
+            [DisplayName("First Option")]
+            [Description("The first option.")]
+            public string Option { get; set; }
+
+            public string Command(
+                string argument,
+                [DisplayName("Optional value")] [Description("Some description")]
+                string optional = "default")
+            {
+                return argument;
             }
         }
     }

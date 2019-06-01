@@ -166,6 +166,7 @@ namespace ConsoleExtensions.Commandline.Parser
                 p.Add(o);
             }
 
+            // TODO : catch all the exceptions that can occur and map them
             return method.Method.Invoke(method.Source, p.ToArray());
         }
     }
