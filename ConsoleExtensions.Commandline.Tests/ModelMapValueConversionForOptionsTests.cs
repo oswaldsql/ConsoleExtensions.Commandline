@@ -1,3 +1,5 @@
+// ReSharper disable StyleCop.SA1600
+// ReSharper disable ExceptionNotDocumented
 namespace ConsoleExtensions.Commandline.Tests
 {
     using System;
@@ -42,6 +44,7 @@ namespace ConsoleExtensions.Commandline.Tests
             // Assert
             Assert.IsType<InvalidArgumentFormatException>(actual);
             var actualException = actual as InvalidArgumentFormatException;
+            Assert.NotNull(actualException);
             Assert.Equal("Invalid", actualException.Value);
             Assert.Equal("Boolean", actualException.Property.PropertyType.Name);
         }
@@ -77,6 +80,7 @@ namespace ConsoleExtensions.Commandline.Tests
             // Assert
             Assert.IsType<InvalidArgumentFormatException>(actual);
             var actualException = actual as InvalidArgumentFormatException;
+            Assert.NotNull(actualException);
             Assert.Equal("Invalid", actualException.Value);
             Assert.Equal("DayOfWeek", actualException.Property.PropertyType.Name);
         }
@@ -93,6 +97,7 @@ namespace ConsoleExtensions.Commandline.Tests
             // Assert
             Assert.IsType<InvalidArgumentFormatException>(actual);
             var actualException = actual as InvalidArgumentFormatException;
+            Assert.NotNull(actualException);
             Assert.Equal("abc", actualException.Value);
             Assert.Equal("Int32", actualException.Type);
         }
@@ -109,6 +114,7 @@ namespace ConsoleExtensions.Commandline.Tests
             // Assert
             Assert.IsType<InvalidArgumentFormatException>(actual);
             var actualException = actual as InvalidArgumentFormatException;
+            Assert.NotNull(actualException);
             Assert.Equal("1.35", actualException.Value);
             Assert.Equal("Int32", actualException.Property.PropertyType.Name);
         }
@@ -126,6 +132,7 @@ namespace ConsoleExtensions.Commandline.Tests
             // Assert
             Assert.IsType<InvalidArgumentFormatException>(actual);
             var actualException = actual as InvalidArgumentFormatException;
+            Assert.NotNull(actualException);
             Assert.Equal("2147483648", actualException.Value);
             Assert.Equal("Int32", actualException.Property.PropertyType.Name);
         }

@@ -1,3 +1,5 @@
+// ReSharper disable StyleCop.SA1600
+// ReSharper disable ExceptionNotDocumented
 namespace ConsoleExtensions.Commandline.Tests
 {
     using System.ComponentModel;

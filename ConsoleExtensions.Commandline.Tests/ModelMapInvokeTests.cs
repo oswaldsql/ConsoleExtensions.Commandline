@@ -1,3 +1,5 @@
+// ReSharper disable ExceptionNotDocumented
+// ReSharper disable StyleCop.SA1600
 namespace ConsoleExtensions.Commandline.Tests
 {
     using ConsoleExtensions.Commandline.Exceptions;
@@ -33,7 +35,6 @@ namespace ConsoleExtensions.Commandline.Tests
             Assert.Equal("SimpleMethodResult", actual.Invoke("SimpleMethod"));
         }
 
-
         [Fact]
         public void GivenAMethodWithDefaultValueParameter_WhenInvokingWithValue_ThenTheValueIsUsed()
         {
@@ -44,7 +45,7 @@ namespace ConsoleExtensions.Commandline.Tests
             var actual = ModelParser.Parse(model);
 
             // Assert
-            Assert.Equal("OtherResult", actual.Invoke("MethodWithDefaultValue","OtherResult"));
+            Assert.Equal("OtherResult", actual.Invoke("MethodWithDefaultValue", "OtherResult"));
         }
 
         [Fact]
@@ -60,6 +61,7 @@ namespace ConsoleExtensions.Commandline.Tests
             // Assert
             Assert.IsType<UnknownOptionException>(actualException);
             var actual = actualException as UnknownOptionException;
+            Assert.NotNull(actual);
             Assert.Equal("UnknownOption", actual.Option);
         }
 
@@ -77,6 +79,7 @@ namespace ConsoleExtensions.Commandline.Tests
             // Assert
             Assert.IsType<UnknownOptionException>(actualException);
             var actual = actualException as UnknownOptionException;
+            Assert.NotNull(actual);
             Assert.Equal("UnknownOption", actual.Option);
         }
 
@@ -93,6 +96,7 @@ namespace ConsoleExtensions.Commandline.Tests
             // Assert
             Assert.IsType<UnknownCommandException>(actualException);
             var actual = actualException as UnknownCommandException;
+            Assert.NotNull(actual);
             Assert.Equal("UnknownMethod", actual.Command);
         }
 
@@ -118,11 +122,12 @@ namespace ConsoleExtensions.Commandline.Tests
 
             // Act
             var sut = ModelParser.Parse(model);
-            var actualException = Record.Exception(() => sut.Invoke("MethodWithTwoArguments","value1"));
+            var actualException = Record.Exception(() => sut.Invoke("MethodWithTwoArguments", "value1"));
 
             // Assert
             Assert.IsType<MissingArgumentException>(actualException);
             var actual = actualException as MissingArgumentException;
+            Assert.NotNull(actual);
             Assert.Equal("value2", actual.Argument);
         }
 
@@ -134,11 +139,12 @@ namespace ConsoleExtensions.Commandline.Tests
 
             // Act
             var sut = ModelParser.Parse(model);
-            var actualException = Record.Exception(() => sut.Invoke("MethodWithTwoArguments","value1", "value2", "value3"));
+            var actualException = Record.Exception(() => sut.Invoke("MethodWithTwoArguments", "value1", "value2", "value3"));
 
             // Assert
             Assert.IsType<TooManyArgumentsException>(actualException);
             var actual = actualException as TooManyArgumentsException;
+            Assert.NotNull(actual);
             Assert.Equal(2, actual.Arguments.Length);
         }
 
