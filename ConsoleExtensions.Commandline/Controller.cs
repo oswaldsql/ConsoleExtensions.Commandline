@@ -95,6 +95,11 @@ namespace ConsoleExtensions.Commandline
 
             try
             {
+                if (args.Length == 0)
+                {
+                    args = new[] { "Help" };
+                }
+
                 var arguments = ArgumentParser.Parse(args);
 
                 this.ValidateArgumentsAgainstModel(arguments);
