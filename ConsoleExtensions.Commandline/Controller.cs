@@ -5,6 +5,8 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
+[assembly:System.Runtime.CompilerServices.InternalsVisibleTo("ConsoleExtensions.Commandline.Tests")]
+
 namespace ConsoleExtensions.Commandline
 {
     using System;

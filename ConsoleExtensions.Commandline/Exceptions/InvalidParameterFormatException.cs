@@ -23,7 +23,10 @@ namespace ConsoleExtensions.Commandline.Exceptions
         /// </summary>
         /// <param name="value">The value.</param>
         /// <param name="parameterInfo">The parameter information.</param>
-        /// <param name="exception"></param>
+        /// <param name="exception">
+        ///     The exception that is the cause of the current exception, or a null reference (Nothing in
+        ///     Visual Basic) if no inner exception is specified.
+        /// </param>
         public InvalidParameterFormatException(string value, ParameterInfo parameterInfo, Exception exception)
             : base($"Invalid parameter '{value}'", exception)
         {
@@ -34,7 +37,7 @@ namespace ConsoleExtensions.Commandline.Exceptions
         }
 
         /// <summary>
-        /// Gets the name of the parameter that was set.
+        ///     Gets the name of the parameter that was set.
         /// </summary>
         public string Name { get; }
 

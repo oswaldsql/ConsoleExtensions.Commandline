@@ -7,11 +7,7 @@
 
 namespace ConsoleExtensions.Commandline.Parser
 {
-    using System;
     using System.Reflection;
-
-    using ConsoleExtensions.Commandline.Converters;
-    using ConsoleExtensions.Commandline.Exceptions;
 
     /// <summary>
     ///     Class ModelOption.
@@ -66,8 +62,13 @@ namespace ConsoleExtensions.Commandline.Parser
             return this.Property.GetMethod.Invoke(this.Source, new object[0]);
         }
 
-        public virtual void Set(object value)
+        /// <summary>
+        ///     Sets the specified value.
+        /// </summary>
+        /// <param name="value">The value.</param>
+        public void Set(object value)
         {
+            // TODO : catch all the exceptions that can occur and map them
             this.Property.SetMethod.Invoke(this.Source, new[] { value });
         }
     }
