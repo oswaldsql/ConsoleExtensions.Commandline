@@ -8,9 +8,12 @@
 namespace ConsoleExtensions.Commandline.Parser
 {
     using System;
+    using System.Collections;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Reflection;
 
+    using ConsoleExtensions.Commandline.Converters;
     using ConsoleExtensions.Commandline.Exceptions;
 
     /// <summary>
@@ -25,8 +28,19 @@ namespace ConsoleExtensions.Commandline.Parser
         /// <param name="actions">The actions.</param>
         public ModelMap(IEnumerable<ModelOption> options, IEnumerable<ModelCommand> actions)
         {
-            this.Options = options.ToDictionary(s => s.Name, StringComparer.InvariantCultureIgnoreCase);
-            this.Commands = actions.ToDictionary(s => s.Name, StringComparer.InvariantCultureIgnoreCase);
+            this.Options = new Dictionary<string, ModelOption>(StringComparer.InvariantCultureIgnoreCase);
+            foreach (var option in options)
+            {
+                this.AddOption(option);
+            }
+
+            this.Commands = new Dictionary<string, ModelCommand>(StringComparer.InvariantCultureIgnoreCase);
+            foreach (var action in actions)
+            {
+                this.AddCommand(action);
+            }
+
+            this.AddValueConverter(new EnumConverter(), new ConvertableConverter(), new IOConverter(), new BoolConverter());
         }
 
         /// <summary>
@@ -39,37 +53,71 @@ namespace ConsoleExtensions.Commandline.Parser
         /// </summary>
         public Dictionary<string, ModelOption> Options { get; }
 
-        /// <summary>
-        ///     Gets or sets the option with the specified name.
-        /// </summary>
-        /// <param name="option">The option name.</param>
-        /// <returns>A string representing the options value.</returns>
-        /// <exception cref="InvalidArgumentFormatException" accessor="set">Thrown if the value conversation failed.</exception>
-        /// <exception cref="UnknownOptionException" accessor="get">Thrown is the specified option is not known.</exception>
-        /// <exception cref="UnknownOptionException" accessor="set">Thrown is the specified option is not known.</exception>
-        public string this[string option]
+        public void SetOption(string option, params string[] values)
         {
-            get
-            {
-                if (this.Options.TryGetValue(option, out var p))
-                {
-                    return p.CurrentValue();
-                }
+            var value = values.FirstOrDefault();
 
+            if (this.Options.TryGetValue(option, out var p))
+            {
+                try
+                {
+                    p.Set(this.ConvertStringToObject(value, p.Property.PropertyType, p.Property));
+                }
+                catch (Exception e)
+                {
+                    throw new InvalidArgumentFormatException(value, p.Property, e);
+                }
+            }
+            else
+            {
                 throw new UnknownOptionException(option, this.Options.Values);
             }
+        }
 
-            set
+        public string[] GetOption(string option)
+        {
+            if (this.Options.TryGetValue(option, out var p))
             {
-                if (this.Options.TryGetValue(option, out var p))
-                {
-                    p.Set(value);
-                }
-                else
-                {
-                    throw new UnknownOptionException(option, this.Options.Values);
-                }
+                return new[] { this.ConvertObjectToString(p.CurrentValue(), p.Property.PropertyType, p.Property) };
             }
+
+            throw new UnknownOptionException(option, this.Options.Values);
+        }
+
+        public List<IValueConverter> ValueConverters = new List<IValueConverter>();
+
+        public object ConvertStringToObject(string stringValue, Type type, ICustomAttributeProvider customAttributeProvider)
+        {
+            object result;
+
+            var valueConverter = this.ValueConverters.FirstOrDefault(converter => converter.CanConvert(type));
+            if (valueConverter != null)
+            {
+                result = valueConverter.ToValue(stringValue, type, customAttributeProvider);
+            }
+            else
+            {
+                throw new ArgumentException("Unable to convert type");
+            }
+
+            return result;
+        }
+
+        public string ConvertObjectToString(object value, Type type, ICustomAttributeProvider customAttributeProvider)
+        {
+            string result;
+
+            var valueConverter = this.ValueConverters.FirstOrDefault(converter => converter.CanConvert(type));
+            if (valueConverter != null)
+            {
+                result = valueConverter.ToString(value, customAttributeProvider);
+            }
+            else
+            {
+                throw new ArgumentException("Unable to convert type");
+            }
+
+            return result;
         }
 
         /// <summary>
@@ -139,11 +187,13 @@ namespace ConsoleExtensions.Commandline.Parser
                 }
                 else
                 {
-                    if (info.ParameterType.IsEnum)
+                    var type = info.ParameterType;
+                    var valueConverter = this.ValueConverters.FirstOrDefault(converter => converter.CanConvert(type));
+                    if (valueConverter != null)
                     {
                         try
                         {
-                            o = Enum.Parse(info.ParameterType, arguments[index], true);
+                            o = valueConverter.ToValue(arguments[index], type, info);
                         }
                         catch (Exception e)
                         {
@@ -152,14 +202,7 @@ namespace ConsoleExtensions.Commandline.Parser
                     }
                     else
                     {
-                        try
-                        {
-                            o = Convert.ChangeType(arguments[index], info.ParameterType);
-                        }
-                        catch (Exception e)
-                        {
-                            throw new InvalidParameterFormatException(arguments[index], info, e);
-                        }
+                        throw new ArgumentException("Unable to convert type");
                     }
                 }
 
@@ -168,6 +211,48 @@ namespace ConsoleExtensions.Commandline.Parser
 
             // TODO : catch all the exceptions that can occur and map them
             return method.Method.Invoke(method.Source, p.ToArray());
+        }
+
+        public ModelMap AddValueConverter(params IValueConverter[] valueConverters)
+        {
+            foreach (var valueConverter in valueConverters)
+            {
+
+                if (this.ValueConverters.Count == 0)
+                {
+                    this.ValueConverters.Add(valueConverter);
+                }
+                else
+                {
+                    var matchingPriority =
+                        this.ValueConverters.FindIndex(converter => converter.Priority == valueConverter.Priority);
+                    if (matchingPriority != -1)
+                    {
+                        this.ValueConverters.Insert(matchingPriority, valueConverter);
+                    }
+                    else
+                    {
+                        var firstWithHigherPriority = this.ValueConverters.FindIndex(
+                            converter => converter.Priority > valueConverter.Priority);
+                        if (firstWithHigherPriority != -1)
+                        {
+                            this.ValueConverters.Insert(firstWithHigherPriority, valueConverter);
+                        }
+                        else
+                        {
+                            this.ValueConverters.Add(valueConverter);
+                        }
+                    }
+                }
+            }
+
+            return this;
+        }
+
+        public ModelMap AddValueConverter<T>(Func<string, T> toValue, Func<T, string> toString)
+        {
+            this.AddValueConverter(new CustomValueConverter<T>(toValue, toString));
+            return this;
         }
     }
 }

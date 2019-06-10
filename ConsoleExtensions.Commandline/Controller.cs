@@ -106,7 +106,7 @@ namespace ConsoleExtensions.Commandline
 
                 foreach (var argument in arguments.Properties)
                 {
-                    this.ModelMap[argument.Key] = argument.Value.FirstOrDefault();
+                    this.ModelMap.SetOption(argument.Key, argument.Value.ToArray());
                 }
 
                 var result = this.ModelMap.Invoke(arguments.Command, arguments.Arguments);

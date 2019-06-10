@@ -56,7 +56,7 @@ namespace ConsoleExtensions.Commandline.Tests
 
             // Act
             var sut = ModelParser.Parse(model);
-            var actualException = Record.Exception(() => sut["UnknownOption"] == "test");
+            var actualException = Record.Exception(() => sut.GetOption("UnknownOption")[0] == "test");
 
             // Assert
             Assert.IsType<UnknownOptionException>(actualException);
@@ -74,7 +74,7 @@ namespace ConsoleExtensions.Commandline.Tests
             // Act
             var sut = ModelParser.Parse(model);
             var dummy = "PrevValue";
-            var actualException = Record.Exception(() => dummy = sut["UnknownOption"]);
+            var actualException = Record.Exception(() => dummy = sut.GetOption("UnknownOption")[0]);
 
             // Assert
             Assert.IsType<UnknownOptionException>(actualException);
@@ -108,10 +108,10 @@ namespace ConsoleExtensions.Commandline.Tests
 
             // Act
             var actual = ModelParser.Parse(model);
-            actual["Option"] = "OptionValue";
+            actual.SetOption("Option", "OptionValue");
 
             // Assert
-            Assert.Equal("OptionValue", actual["Option"]);
+            Assert.Equal("OptionValue", actual.GetOption("Option")[0]);
         }
 
         [Fact]
