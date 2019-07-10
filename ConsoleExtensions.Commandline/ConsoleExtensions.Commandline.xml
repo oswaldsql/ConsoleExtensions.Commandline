@@ -171,6 +171,13 @@
             <returns>A object of the specified type.</returns>
             <exception cref="T:System.ArgumentException">Thrown if the conversion was not a success.</exception>
         </member>
+        <member name="M:ConsoleExtensions.Commandline.Converters.BoolValueAnnotationAttribute.CanConvert(System.Type)">
+            <summary>
+                Determines whether this instance can convert the specified type.
+            </summary>
+            <param name="type">The type.</param>
+            <returns><c>true</c> if this instance can convert the specified type; otherwise, <c>false</c>.</returns>
+        </member>
         <member name="T:ConsoleExtensions.Commandline.Converters.ConverterPriority">
             <summary>
             Enum ConverterPriority

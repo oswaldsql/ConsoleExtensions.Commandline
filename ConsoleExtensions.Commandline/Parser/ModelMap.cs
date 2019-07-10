@@ -297,14 +297,27 @@ namespace ConsoleExtensions.Commandline.Parser
         {
             object result;
 
-            var valueConverter = this.valueConverters.FirstOrDefault(converter => converter.CanConvert(type));
-            if (valueConverter != null)
+            if (customAttributeProvider.TryGetCustomAttribute<CustomConverterAttribute>(out var con))
             {
-                result = valueConverter.ConvertToValue(stringValue, type, customAttributeProvider);
+                result = con.ConvertToValue(stringValue, type);
             }
             else
             {
-                throw new ArgumentException("Unable to convert type");
+                var valueConverter = this.valueConverters.FirstOrDefault(converter => converter.CanConvert(type));
+                if (valueConverter != null)
+                {
+                    result = valueConverter.ConvertToValue(stringValue, type, customAttributeProvider);
+                }
+                else
+                {
+                    throw new ArgumentException("Unable to convert type");
+                }
+            }
+
+            var customValidatorAttributes = customAttributeProvider.GetCustomAttributes<CustomValidatorAttribute>();
+            foreach (var validator in customValidatorAttributes)
+            {
+                validator.Validate(result);
             }
 
             return result;
