@@ -1,5 +1,15 @@
-﻿namespace ConsoleExtensions.Commandline.Tests.ConverterTests
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="BoolConverterTests.cs" company="Lasse Sjørup">
+//   Copyright (c) 2019 Lasse Sjørup
+//   Licensed under the MIT license. See LICENSE file in the solution root for full license information.
+// </copyright>
+// --------------------------------------------------------------------------------------------------------------------
+
+namespace ConsoleExtensions.Commandline.Tests.ConverterTests
 {
+    using System;
+    using System.Linq;
+
     using ConsoleExtensions.Commandline.Converters;
     using ConsoleExtensions.Commandline.Exceptions;
     using ConsoleExtensions.Commandline.Parser;
@@ -59,9 +69,9 @@
         [InlineData("yeps", true)]
         [InlineData("Yeps", true)]
         [InlineData("YEPS", true)]
-        [InlineData("nop", false)]
-        [InlineData("Nop", false)]
-        [InlineData("NOP", false)]
+        [InlineData("nope", false)]
+        [InlineData("Nope", false)]
+        [InlineData("NOPe", false)]
         public void GivenABoolValueWithCustomValues_WhenSettingAndGettingValues_ThenTheCustomValuesAreUsed(
             string input,
             bool expected)
@@ -108,12 +118,71 @@
             Assert.Equal("Boolean", actualException.Type);
         }
 
+        [Theory]
+        [InlineData("CustomBoolValue", true, "yeps")]
+        [InlineData("CustomBoolValue", false, "nope")]
+        [InlineData("BoolValue", true, "True")]
+        [InlineData("BoolValue", false, "False")]
+        public void GivenAModelWithABoolValue_WhenGettingTheStringRepresentation_ThenTheCorrectConverterIsUsed(string field, bool value, string expected)
+        {
+            // Arrange
+            var model = new Mock();
+            var sut = ModelParser.Parse(model);
+
+            // Act
+            model.CustomBoolValue = value;
+            model.BoolValue = value;
+            var actual = sut.GetOption(field).First();
+
+            // Assert
+            Assert.Equal(expected, actual);
+        }
+
+        [Fact]
+        public void GivenAModelWithANoneBoolValue_WhenTheValueIsMarkedWithTheBoolConverter_ThenThrowException()
+        {
+            // Arrange
+            var model = new Mock();
+            var sut = ModelParser.Parse(model);
+
+            // Act
+            var actualOnSet = Record.Exception(() => sut.SetOption("NotABoolValue", "False"));
+            var actualOnGet = Record.Exception(() => sut.GetOption("NotABoolValue"));
+
+            // Assert
+            var onSet = actualOnSet as InvalidArgumentFormatException;
+            Assert.NotNull(onSet);
+            Assert.Equal("NotABoolValue", onSet.Name);
+
+            var onGet = actualOnGet as ArgumentException;
+            Assert.NotNull(onGet);
+        }
+
+        [Theory]
+        [InlineData(typeof(bool), true)]
+        [InlineData(typeof(string), false)]
+        [InlineData(typeof(int), false)]
+        public void GivenABoolValueAnnotation_WhenChechingCanConvert_ThenOnlyBooleanShouldReturnTrue(Type input, bool expected)
+        {
+            // Arrange
+            var attribute = new BoolValueAnnotationAttribute("true", "false");
+
+            // Act
+            var actual = attribute.CanConvert(input);
+            // Assert
+            Assert.Equal(expected, actual);
+        }
+
+
         public class Mock
         {
             public bool BoolValue { get; set; }
 
-            [BoolValueAnnotation("yeps", "nop")]
+            [BoolValueAnnotation("yeps", "nope")]
             public bool CustomBoolValue { get; set; }
+
+            [BoolValueAnnotation("yeps", "nope")]
+            public string NotABoolValue { get; set; }
         }
     }
 }

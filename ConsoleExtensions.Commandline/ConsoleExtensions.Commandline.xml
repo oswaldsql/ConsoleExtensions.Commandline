@@ -171,12 +171,72 @@
             <returns>A object of the specified type.</returns>
             <exception cref="T:System.ArgumentException">Thrown if the conversion was not a success.</exception>
         </member>
+        <member name="T:ConsoleExtensions.Commandline.Converters.BoolValueAnnotationAttribute">
+            <summary>
+                Class BoolValueAnnotationAttribute. Implements the
+                <see cref="T:ConsoleExtensions.Commandline.Converters.CustomConverterAttribute" />
+            </summary>
+            <seealso cref="T:ConsoleExtensions.Commandline.Converters.CustomConverterAttribute" />
+        </member>
+        <member name="M:ConsoleExtensions.Commandline.Converters.BoolValueAnnotationAttribute.#ctor(System.String,System.String)">
+            <summary>
+                Initializes a new instance of the
+                <see cref="T:ConsoleExtensions.Commandline.Converters.BoolValueAnnotationAttribute" /> class.
+            </summary>
+            <param name="trueValue">The <see langword="true" /> value.</param>
+            <param name="falseValue">The <see langword="false" /> value.</param>
+        </member>
+        <member name="P:ConsoleExtensions.Commandline.Converters.BoolValueAnnotationAttribute.FalseValue">
+            <summary>
+                Gets the <see langword="false" /> value.
+            </summary>
+            <value>
+                The <see langword="false" /> value.
+            </value>
+        </member>
+        <member name="P:ConsoleExtensions.Commandline.Converters.BoolValueAnnotationAttribute.TrueValue">
+            <summary>
+                Gets the <see langword="true" /> value.
+            </summary>
+            <value>
+                The <see langword="true" /> value.
+            </value>
+        </member>
         <member name="M:ConsoleExtensions.Commandline.Converters.BoolValueAnnotationAttribute.CanConvert(System.Type)">
             <summary>
                 Determines whether this instance can convert the specified type.
             </summary>
             <param name="type">The type.</param>
-            <returns><c>true</c> if this instance can convert the specified type; otherwise, <c>false</c>.</returns>
+            <returns>
+                <c>true</c> if this instance can convert the specified type;
+                otherwise, <c>false</c> .
+            </returns>
+        </member>
+        <member name="M:ConsoleExtensions.Commandline.Converters.BoolValueAnnotationAttribute.ConvertToString(System.Object)">
+            <summary>
+                Converts the <paramref name="value" /> to a string.
+            </summary>
+            <param name="value">The value to convert to string.</param>
+            <exception cref="T:System.ArgumentException">
+                Thrown if the <paramref name="value" /> is not a boolean value.
+            </exception>
+            <returns>
+                A string representing the value.
+            </returns>
+        </member>
+        <member name="M:ConsoleExtensions.Commandline.Converters.BoolValueAnnotationAttribute.ConvertToValue(System.String,System.Type)">
+            <summary>
+                Converts a string to the specified type.
+            </summary>
+            <param name="value">The value.</param>
+            <param name="type">The type.</param>
+            <exception cref="T:System.ArgumentException">
+                Thrown if the string <paramref name="value" /> is not a valid
+                boolean.
+            </exception>
+            <returns>
+                A object of the specified type.
+            </returns>
         </member>
         <member name="T:ConsoleExtensions.Commandline.Converters.ConverterPriority">
             <summary>
@@ -242,6 +302,38 @@
             <param name="source">The source.</param>
             <param name="type">The type.</param>
             <param name="customAttributeProvider">The custom attribute provider.</param>
+            <returns>A object of the specified type.</returns>
+        </member>
+        <member name="T:ConsoleExtensions.Commandline.Converters.CustomConverterAttribute">
+            <summary>
+            Class CustomConverterAttribute. Implements the
+            <see cref="T:System.Attribute" />
+            Implements the <see cref="T:System.Attribute" />
+            </summary>
+            <seealso cref="T:System.Attribute" />
+            <seealso cref="T:System.Attribute" />
+        </member>
+        <member name="M:ConsoleExtensions.Commandline.Converters.CustomConverterAttribute.CanConvert(System.Type)">
+            <summary>
+            Determines whether this instance can convert the specified type.
+            </summary>
+            <param name="type">The type.</param>
+            <returns><c>true</c> if this instance can convert the specified type;
+            otherwise, <c>false</c> .</returns>
+        </member>
+        <member name="M:ConsoleExtensions.Commandline.Converters.CustomConverterAttribute.ConvertToString(System.Object)">
+            <summary>
+            Converts to string.
+            </summary>
+            <param name="value">The value to convert from.</param>
+            <returns>A string representing the value.</returns>
+        </member>
+        <member name="M:ConsoleExtensions.Commandline.Converters.CustomConverterAttribute.ConvertToValue(System.String,System.Type)">
+            <summary>
+            Converts a string to the specified type.
+            </summary>
+            <param name="value">The value.</param>
+            <param name="type">The type.</param>
             <returns>A object of the specified type.</returns>
         </member>
         <member name="T:ConsoleExtensions.Commandline.Converters.CustomValueConverter`1">
@@ -1042,6 +1134,75 @@
             </summary>
             <param name="name">The name.</param>
             <returns>The friendly name.</returns>
+        </member>
+        <member name="T:ConsoleExtensions.Commandline.Validators.CustomValidatorAttribute">
+            <summary>
+                Class CustomValidatorAttribute. Implements the <see cref="T:System.Attribute" />. Used for adding custom validation to properties.
+            </summary>
+            <seealso cref="T:System.Attribute" />
+        </member>
+        <member name="M:ConsoleExtensions.Commandline.Validators.CustomValidatorAttribute.CanValidate(System.Type)">
+            <summary>
+                Determines whether this instance can validate the specified
+                type.
+            </summary>
+            <param name="type">The type.</param>
+            <returns>
+                <c>true</c> if this instance can validate the specified type;
+                otherwise, <c>false</c> .
+            </returns>
+        </member>
+        <member name="M:ConsoleExtensions.Commandline.Validators.CustomValidatorAttribute.Validate(System.Object)">
+            <summary>
+                Validates the specified value. Throws the appropriate exception if the value is not valid.
+            </summary>
+            <param name="value">The value to validate.</param>
+        </member>
+        <member name="T:ConsoleExtensions.Commandline.Validators.MinMaxValidatorAttribute">
+            <summary>
+                Class MinMaxValidatorAttribute. Validates a value to be between the
+                min and max value. Implements the
+                <see cref="T:ConsoleExtensions.Commandline.Validators.CustomValidatorAttribute" />
+            </summary>
+            <seealso cref="T:ConsoleExtensions.Commandline.Parser.CustomValidatorAttribute" />
+        </member>
+        <member name="F:ConsoleExtensions.Commandline.Validators.MinMaxValidatorAttribute.max">
+            <summary>
+                Determines the maximum value of the parameters.
+            </summary>
+        </member>
+        <member name="F:ConsoleExtensions.Commandline.Validators.MinMaxValidatorAttribute.min">
+            <summary>
+                Determines the minimum value of the parameters.
+            </summary>
+        </member>
+        <member name="M:ConsoleExtensions.Commandline.Validators.MinMaxValidatorAttribute.#ctor(System.Object,System.Object)">
+            <summary>
+                Initializes a new instance of the
+                <see cref="T:ConsoleExtensions.Commandline.Validators.MinMaxValidatorAttribute" /> class.
+            </summary>
+            <param name="min">The minimum.</param>
+            <param name="max">The maximum.</param>
+        </member>
+        <member name="M:ConsoleExtensions.Commandline.Validators.MinMaxValidatorAttribute.CanValidate(System.Type)">
+            <summary>
+                Determines whether this instance can validate the specified
+                type.
+            </summary>
+            <param name="type">The type.</param>
+            <returns>
+                <c>true</c> if this instance can validate the specified type;
+                otherwise, <c>false</c> .
+            </returns>
+        </member>
+        <member name="M:ConsoleExtensions.Commandline.Validators.MinMaxValidatorAttribute.Validate(System.Object)">
+            <summary>
+                Validates the specified source.
+            </summary>
+            <param name="value">The value to validate.</param>
+            <exception cref="T:System.ArgumentException">
+                Thrown if the <paramref name="value" /> is out of bounds.
+            </exception>
         </member>
     </members>
 </doc>

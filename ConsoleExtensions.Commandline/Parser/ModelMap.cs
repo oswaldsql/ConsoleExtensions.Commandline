@@ -14,6 +14,7 @@ namespace ConsoleExtensions.Commandline.Parser
 
     using ConsoleExtensions.Commandline.Converters;
     using ConsoleExtensions.Commandline.Exceptions;
+    using ConsoleExtensions.Commandline.Validators;
 
     /// <summary>
     ///     Class ModelMap. Handles the translation of command and options to methods and properties.
@@ -269,14 +270,21 @@ namespace ConsoleExtensions.Commandline.Parser
         {
             string result;
 
-            var valueConverter = this.valueConverters.FirstOrDefault(converter => converter.CanConvert(type));
-            if (valueConverter != null)
+            if (customAttributeProvider.TryGetCustomAttribute<CustomConverterAttribute>(out var con))
             {
-                result = valueConverter.ConvertToString(value, customAttributeProvider);
+                result = con.ConvertToString(value);
             }
             else
             {
-                throw new ArgumentException("Unable to convert type");
+                var valueConverter = this.valueConverters.FirstOrDefault(converter => converter.CanConvert(type));
+                if (valueConverter != null)
+                {
+                    result = valueConverter.ConvertToString(value, customAttributeProvider);
+                }
+                else
+                {
+                    throw new ArgumentException("Unable to convert type");
+                }
             }
 
             return result;

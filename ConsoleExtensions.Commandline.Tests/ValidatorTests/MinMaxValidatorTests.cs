@@ -4,9 +4,12 @@ using Xunit;
 
 namespace ConsoleExtensions.Commandline.Tests.ValidatorTests
 {
+    using ConsoleExtensions.Commandline.Validators;
+
     public class MinMaxValidatorTests
     {
         [Theory]
+        [InlineData(null)]
         [InlineData("9")]
         [InlineData("24")]
         public void
@@ -37,7 +40,6 @@ namespace ConsoleExtensions.Commandline.Tests.ValidatorTests
             // Assert
             Assert.Equal(10, model.IntValue);
         }
-
 
         public class Mock
         {
