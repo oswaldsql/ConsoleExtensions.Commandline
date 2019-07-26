@@ -5,7 +5,7 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace ConsoleExtensions.Commandline.Converters
+namespace ConsoleExtensions.Commandline.Converters.Custom
 {
     using System;
 
@@ -16,6 +16,7 @@ namespace ConsoleExtensions.Commandline.Converters
     /// </summary>
     /// <seealso cref="System.Attribute" />
     /// <seealso cref="T:System.Attribute" />
+    [AttributeUsage(AttributeTargets.Property | AttributeTargets.Parameter)]
     public abstract class CustomConverterAttribute : Attribute
     {
         /// <summary>

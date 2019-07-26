@@ -13,7 +13,9 @@ namespace ConsoleExtensions.Commandline.Parser
     using System.Reflection;
 
     using ConsoleExtensions.Commandline.Converters;
+    using ConsoleExtensions.Commandline.Converters.Custom;
     using ConsoleExtensions.Commandline.Exceptions;
+    using ConsoleExtensions.Commandline.Util;
     using ConsoleExtensions.Commandline.Validators;
 
     /// <summary>
@@ -205,21 +207,13 @@ namespace ConsoleExtensions.Commandline.Parser
                 else
                 {
                     var type = info.ParameterType;
-                    var valueConverter = this.valueConverters.FirstOrDefault(converter => converter.CanConvert(type));
-                    if (valueConverter != null)
+                    try
                     {
-                        try
-                        {
-                            o = valueConverter.ConvertToValue(arguments[index], type, info);
-                        }
-                        catch (Exception e)
-                        {
-                            throw new InvalidParameterFormatException(arguments[index], info, e);
-                        }
+                        o = this.ConvertStringToObject(arguments[index], type, info);
                     }
-                    else
+                    catch (Exception e)
                     {
-                        throw new ArgumentException("Unable to convert type");
+                        throw new InvalidParameterFormatException(arguments[index], info, e);
                     }
                 }
 

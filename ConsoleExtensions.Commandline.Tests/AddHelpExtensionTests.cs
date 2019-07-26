@@ -1,5 +1,9 @@
-// ReSharper disable ExceptionNotDocumented
-// ReSharper disable StyleCop.SA1600
+// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="AddHelpExtensionTests.cs" company="Lasse Sjørup">
+//   Copyright (c) 2019 Lasse Sjørup
+//   Licensed under the MIT license. See LICENSE file in the solution root for full license information.
+// </copyright>
+// --------------------------------------------------------------------------------------------------------------------
 
 namespace ConsoleExtensions.Commandline.Tests
 {
@@ -10,8 +14,15 @@ namespace ConsoleExtensions.Commandline.Tests
 
     using Xunit;
 
+    /// <summary>
+    ///     Class AddHelpExtensionTests.
+    /// </summary>
     public class AddHelpExtensionTests
     {
+        /// <summary>
+        ///     Given a model when a help method exists then add help dos not
+        ///     add help.
+        /// </summary>
         [Fact]
         public void GivenAModel_WhenAHelpMethodExists_ThenAddHelpDosNotAddHelp()
         {
@@ -26,6 +37,10 @@ namespace ConsoleExtensions.Commandline.Tests
             Assert.Equal("Custom help", actual);
         }
 
+        /// <summary>
+        ///     Given a model when calling help with command topic then help
+        ///     should contain model metadata.
+        /// </summary>
         [Fact]
         public void GivenAModel_WhenCallingHelpWithCommandTopic_ThenHelpShouldContainModelMetadata()
         {
@@ -45,6 +60,10 @@ namespace ConsoleExtensions.Commandline.Tests
             Assert.Contains(actual.Options, option => option.Name == "Option");
         }
 
+        /// <summary>
+        ///     Given a model when calling help with command topic then help
+        ///     should contain the right usage information.
+        /// </summary>
         [Fact]
         public void GivenAModel_WhenCallingHelpWithCommandTopic_ThenHelpShouldContainTheRightUsageInformation()
         {
@@ -79,6 +98,10 @@ namespace ConsoleExtensions.Commandline.Tests
             Assert.Equal(secondExpected, second, new DetailsComparer());
         }
 
+        /// <summary>
+        ///     Given a model when calling help with option topic then help for
+        ///     that option should be returned.
+        /// </summary>
         [Fact]
         public void GivenAModel_WhenCallingHelpWithOptionTopic_ThenHelpForThatOptionShouldBeReturned()
         {
@@ -97,6 +120,10 @@ namespace ConsoleExtensions.Commandline.Tests
             Assert.Contains(actual.Options, option => option.Name == "Option");
         }
 
+        /// <summary>
+        ///     Given a model when calling help with option topic then help
+        ///     should contain model metadata.
+        /// </summary>
         [Fact]
         public void GivenAModel_WhenCallingHelpWithOptionTopic_ThenHelpShouldContainModelMetadata()
         {
@@ -115,6 +142,10 @@ namespace ConsoleExtensions.Commandline.Tests
             Assert.Contains(actual.Options, option => option.Name == "Option");
         }
 
+        /// <summary>
+        ///     Given a model when calling help with option topic then help
+        ///     should contain the right usage information.
+        /// </summary>
         [Fact]
         public void GivenAModel_WhenCallingHelpWithOptionTopic_ThenHelpShouldContainTheRightUsageInformation()
         {
@@ -134,6 +165,10 @@ namespace ConsoleExtensions.Commandline.Tests
             Assert.Null(usage.Arguments);
         }
 
+        /// <summary>
+        ///     Given a model when calling help without topic then help for full
+        ///     model should be returned.
+        /// </summary>
         [Fact]
         public void GivenAModel_WhenCallingHelpWithoutTopic_ThenHelpForFullModelShouldBeReturned()
         {
@@ -154,22 +189,49 @@ namespace ConsoleExtensions.Commandline.Tests
             Assert.Contains(actual.Options, option => option.Name == "Option");
         }
 
+        /// <summary>
+        ///     Class ClassWithExistingHelp.
+        /// </summary>
         public class ClassWithExistingHelp
         {
+            /// <summary>
+            ///     Helps the specified topic.
+            /// </summary>
+            /// <param name="topic">The topic.</param>
+            /// <returns>
+            ///     The custom help message.
+            /// </returns>
             public string Help(string topic)
             {
                 return "Custom help";
             }
         }
 
+        /// <summary>
+        ///     Class Mock.
+        /// </summary>
         [DisplayName("MockModel")]
         [Description("Describe Mock Model")]
         public class Mock
         {
+            /// <summary>
+            ///     Gets or sets the option.
+            /// </summary>
+            /// <value>
+            ///     The option.
+            /// </value>
             [DisplayName("First Option")]
             [Description("The first option.")]
             public string Option { get; set; }
 
+            /// <summary>
+            ///     Commands the specified argument.
+            /// </summary>
+            /// <param name="argument">The argument.</param>
+            /// <param name="optional">The optional.</param>
+            /// <returns>
+            ///     A mock text string.
+            /// </returns>
             public string Command(
                 string argument,
                 [DisplayName("Optional value")] [Description("Some description")]

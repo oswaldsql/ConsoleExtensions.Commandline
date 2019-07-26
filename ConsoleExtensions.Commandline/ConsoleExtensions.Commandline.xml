@@ -56,7 +56,8 @@
         </member>
         <member name="T:ConsoleExtensions.Commandline.Controller">
             <summary>
-                Class Controller. Takes a object and presents is as a command line interface.
+                Class Controller. Takes a object and presents is as a command line
+                interface.
             </summary>
         </member>
         <member name="F:ConsoleExtensions.Commandline.Controller.resultTemplate">
@@ -66,12 +67,12 @@
         </member>
         <member name="M:ConsoleExtensions.Commandline.Controller.#ctor(System.Object,System.Action{ConsoleExtensions.Commandline.Controller})">
             <summary>
-                Initializes a new instance of the <see cref="T:ConsoleExtensions.Commandline.Controller" /> class.
+                Initializes a new instance of the Controller class.
             </summary>
             <param name="model">The model.</param>
             <param name="setup">
-                The setup. Optional overwrite of the extensions added to the console. Is not specified the Default
-                setup is applied.
+                The setup. Optional overwrite of the extensions added to the
+                console. Is not specified the Default setup is applied.
             </param>
         </member>
         <member name="P:ConsoleExtensions.Commandline.Controller.Model">
@@ -81,7 +82,8 @@
         </member>
         <member name="P:ConsoleExtensions.Commandline.Controller.ModelMap">
             <summary>
-                Gets the model map used to map commands and options to methods and properties.
+                Gets the model map used to map commands and options to methods
+                and properties.
             </summary>
         </member>
         <member name="P:ConsoleExtensions.Commandline.Controller.Proxy">
@@ -91,12 +93,19 @@
         </member>
         <member name="P:ConsoleExtensions.Commandline.Controller.TemplateParser">
             <summary>
-                Gets the template parser used to present results of command and exceptions.
+                Gets the template parser used to present results of command and
+                exceptions.
             </summary>
         </member>
         <member name="M:ConsoleExtensions.Commandline.Controller.Run(System.Object,System.String[],System.Action{ConsoleExtensions.Commandline.Controller})">
             <summary>
-                Instantiates a new controller with the model and standard setup and runs the arguments against the model.
+                <para>
+                    Instantiates a new controller with the <paramref name="model" />
+                </para>
+                <para>
+                    and standard <paramref name="setup" /> and runs the arguments
+                    against the model.
+                </para>
             </summary>
             <param name="model">The model.</param>
             <param name="args">The arguments.</param>
@@ -116,11 +125,15 @@
         </member>
         <member name="M:ConsoleExtensions.Commandline.Controller.ValidateArgumentsAgainstModel(ConsoleExtensions.Commandline.Arguments.ParsedArguments)">
             <summary>
-                Validates the arguments against model.
+                Validates the <paramref name="arguments" /> against model.
             </summary>
             <param name="arguments">The arguments.</param>
-            <exception cref="T:ConsoleExtensions.Commandline.Exceptions.UnknownOptionException">Thrown when a requested options is unknown.</exception>
-            <exception cref="T:ConsoleExtensions.Commandline.Exceptions.UnknownCommandException">Thrown when a requested command is unknown.</exception>
+            <exception cref="T:ConsoleExtensions.Commandline.Exceptions.UnknownOptionException">
+                Thrown when a requested options is unknown.
+            </exception>
+            <exception cref="T:ConsoleExtensions.Commandline.Exceptions.UnknownCommandException">
+                Thrown when a requested command is unknown.
+            </exception>
         </member>
         <member name="T:ConsoleExtensions.Commandline.Converters.BoolConverter">
             <summary>
@@ -291,22 +304,22 @@
             <param name="customAttributeProvider">The custom attribute provider.</param>
             <returns>A object of the specified type.</returns>
         </member>
-        <member name="T:ConsoleExtensions.Commandline.Converters.BoolValueAnnotationAttribute">
+        <member name="T:ConsoleExtensions.Commandline.Converters.Custom.BoolValueAnnotationAttribute">
             <summary>
                 Class BoolValueAnnotationAttribute. Implements the
-                <see cref="T:ConsoleExtensions.Commandline.Converters.CustomConverterAttribute" />
+                <see cref="T:ConsoleExtensions.Commandline.Converters.Custom.CustomConverterAttribute" />
             </summary>
             <seealso cref="T:ConsoleExtensions.Commandline.Converters.CustomConverterAttribute" />
         </member>
-        <member name="M:ConsoleExtensions.Commandline.Converters.BoolValueAnnotationAttribute.#ctor(System.String,System.String)">
+        <member name="M:ConsoleExtensions.Commandline.Converters.Custom.BoolValueAnnotationAttribute.#ctor(System.String,System.String)">
             <summary>
                 Initializes a new instance of the
-                <see cref="T:ConsoleExtensions.Commandline.Converters.BoolValueAnnotationAttribute" /> class.
+                <see cref="T:ConsoleExtensions.Commandline.Converters.Custom.BoolValueAnnotationAttribute" /> class.
             </summary>
             <param name="trueValue">The <see langword="true" /> value.</param>
             <param name="falseValue">The <see langword="false" /> value.</param>
         </member>
-        <member name="P:ConsoleExtensions.Commandline.Converters.BoolValueAnnotationAttribute.FalseValue">
+        <member name="P:ConsoleExtensions.Commandline.Converters.Custom.BoolValueAnnotationAttribute.FalseValue">
             <summary>
                 Gets the <see langword="false" /> value.
             </summary>
@@ -314,7 +327,7 @@
                 The <see langword="false" /> value.
             </value>
         </member>
-        <member name="P:ConsoleExtensions.Commandline.Converters.BoolValueAnnotationAttribute.TrueValue">
+        <member name="P:ConsoleExtensions.Commandline.Converters.Custom.BoolValueAnnotationAttribute.TrueValue">
             <summary>
                 Gets the <see langword="true" /> value.
             </summary>
@@ -322,7 +335,7 @@
                 The <see langword="true" /> value.
             </value>
         </member>
-        <member name="M:ConsoleExtensions.Commandline.Converters.BoolValueAnnotationAttribute.CanConvert(System.Type)">
+        <member name="M:ConsoleExtensions.Commandline.Converters.Custom.BoolValueAnnotationAttribute.CanConvert(System.Type)">
             <summary>
                 Determines whether this instance can convert the specified type.
             </summary>
@@ -332,7 +345,7 @@
                 otherwise, <c>false</c> .
             </returns>
         </member>
-        <member name="M:ConsoleExtensions.Commandline.Converters.BoolValueAnnotationAttribute.ConvertToString(System.Object)">
+        <member name="M:ConsoleExtensions.Commandline.Converters.Custom.BoolValueAnnotationAttribute.ConvertToString(System.Object)">
             <summary>
                 Converts the <paramref name="value" /> to a string.
             </summary>
@@ -344,7 +357,7 @@
                 A string representing the value.
             </returns>
         </member>
-        <member name="M:ConsoleExtensions.Commandline.Converters.BoolValueAnnotationAttribute.ConvertToValue(System.String,System.Type)">
+        <member name="M:ConsoleExtensions.Commandline.Converters.Custom.BoolValueAnnotationAttribute.ConvertToValue(System.String,System.Type)">
             <summary>
                 Converts a string to the specified type.
             </summary>
@@ -358,7 +371,7 @@
                 A object of the specified type.
             </returns>
         </member>
-        <member name="T:ConsoleExtensions.Commandline.Converters.CustomConverterAttribute">
+        <member name="T:ConsoleExtensions.Commandline.Converters.Custom.CustomConverterAttribute">
             <summary>
             Class CustomConverterAttribute. Implements the
             <see cref="T:System.Attribute" />
@@ -367,7 +380,7 @@
             <seealso cref="T:System.Attribute" />
             <seealso cref="T:System.Attribute" />
         </member>
-        <member name="M:ConsoleExtensions.Commandline.Converters.CustomConverterAttribute.CanConvert(System.Type)">
+        <member name="M:ConsoleExtensions.Commandline.Converters.Custom.CustomConverterAttribute.CanConvert(System.Type)">
             <summary>
             Determines whether this instance can convert the specified type.
             </summary>
@@ -375,14 +388,14 @@
             <returns><c>true</c> if this instance can convert the specified type;
             otherwise, <c>false</c> .</returns>
         </member>
-        <member name="M:ConsoleExtensions.Commandline.Converters.CustomConverterAttribute.ConvertToString(System.Object)">
+        <member name="M:ConsoleExtensions.Commandline.Converters.Custom.CustomConverterAttribute.ConvertToString(System.Object)">
             <summary>
             Converts to string.
             </summary>
             <param name="value">The value to convert from.</param>
             <returns>A string representing the value.</returns>
         </member>
-        <member name="M:ConsoleExtensions.Commandline.Converters.CustomConverterAttribute.ConvertToValue(System.String,System.Type)">
+        <member name="M:ConsoleExtensions.Commandline.Converters.Custom.CustomConverterAttribute.ConvertToValue(System.String,System.Type)">
             <summary>
             Converts a string to the specified type.
             </summary>
@@ -1172,6 +1185,36 @@
             <param name="name">The name.</param>
             <returns>The friendly name.</returns>
         </member>
+        <member name="T:ConsoleExtensions.Commandline.Util.CustomAttributeProviderExtensions">
+            <summary>
+                Class CustomAttributeProviderExtensions. Extends the attribute
+                provider with some nice helper functions.
+            </summary>
+        </member>
+        <member name="M:ConsoleExtensions.Commandline.Util.CustomAttributeProviderExtensions.GetCustomAttributes``1(System.Reflection.ICustomAttributeProvider)">
+            <summary>
+                Gets the custom attributes.
+            </summary>
+            <typeparam name="T">The type of attribute to get.</typeparam>
+            <param name="element">The element.</param>
+            <returns>
+                A enumeration of attributes of the specified type.
+            </returns>
+        </member>
+        <member name="M:ConsoleExtensions.Commandline.Util.CustomAttributeProviderExtensions.TryGetCustomAttribute``1(System.Reflection.ICustomAttributeProvider,``0@)">
+            <summary>
+                Tries the get custom attribute.
+            </summary>
+            <typeparam name="T">The type of attribute to get.</typeparam>
+            <param name="element">The element.</param>
+            <param name="value">The value.</param>
+            <returns>
+                <para>
+                    <c>true</c> if a attribute of the type exists, <c>false</c>
+                </para>
+                <para>otherwise.</para>
+            </returns>
+        </member>
         <member name="T:ConsoleExtensions.Commandline.Validators.CustomValidatorAttribute">
             <summary>
                 Class CustomValidatorAttribute. Implements the <see cref="T:System.Attribute" />. Used for adding custom validation to properties.
@@ -1197,10 +1240,14 @@
         </member>
         <member name="T:ConsoleExtensions.Commandline.Validators.MinMaxValidatorAttribute">
             <summary>
-                Class MinMaxValidatorAttribute. Validates a value to be between the
-                min and max value. Implements the
-                <see cref="T:ConsoleExtensions.Commandline.Validators.CustomValidatorAttribute" />
+                <para>
+                    Class MinMaxValidatorAttribute. Validates a value to be between the
+                    min and max value. Implements the
+                    <see cref="T:ConsoleExtensions.Commandline.Validators.CustomValidatorAttribute" />
+                </para>
+                <para>Implements the <see cref="T:ConsoleExtensions.Commandline.Validators.CustomValidatorAttribute" /></para>
             </summary>
+            <seealso cref="T:ConsoleExtensions.Commandline.Validators.CustomValidatorAttribute" />
             <seealso cref="T:ConsoleExtensions.Commandline.Parser.CustomValidatorAttribute" />
         </member>
         <member name="F:ConsoleExtensions.Commandline.Validators.MinMaxValidatorAttribute.max">

@@ -1,14 +1,23 @@
-﻿namespace ConsoleExtensions.Commandline.Validators
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="MinMaxValidatorAttribute.cs" company="Lasse Sjørup">
+//   Copyright (c) 2019 Lasse Sjørup
+//   Licensed under the MIT license. See LICENSE file in the solution root for full license information.
+// </copyright>
+// --------------------------------------------------------------------------------------------------------------------
+
+namespace ConsoleExtensions.Commandline.Validators
 {
     using System;
 
-    using ConsoleExtensions.Commandline.Parser;
-
     /// <summary>
-    ///     Class MinMaxValidatorAttribute. Validates a value to be between the
-    ///     min and max value. Implements the
-    ///     <see cref="CustomValidatorAttribute" />
+    ///     <para>
+    ///         Class MinMaxValidatorAttribute. Validates a value to be between the
+    ///         min and max value. Implements the
+    ///         <see cref="CustomValidatorAttribute" />
+    ///     </para>
+    ///     <para>Implements the <see cref="CustomValidatorAttribute" /></para>
     /// </summary>
+    /// <seealso cref="T:ConsoleExtensions.Commandline.Validators.CustomValidatorAttribute" />
     /// <seealso cref="T:ConsoleExtensions.Commandline.Parser.CustomValidatorAttribute" />
     public class MinMaxValidatorAttribute : CustomValidatorAttribute
     {

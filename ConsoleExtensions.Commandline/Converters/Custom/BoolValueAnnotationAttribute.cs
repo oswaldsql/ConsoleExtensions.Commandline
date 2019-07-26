@@ -5,7 +5,7 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace ConsoleExtensions.Commandline.Converters
+namespace ConsoleExtensions.Commandline.Converters.Custom
 {
     using System;
 
@@ -14,7 +14,6 @@ namespace ConsoleExtensions.Commandline.Converters
     ///     <see cref="CustomConverterAttribute" />
     /// </summary>
     /// <seealso cref="T:ConsoleExtensions.Commandline.Converters.CustomConverterAttribute" />
-    [AttributeUsage(AttributeTargets.Property | AttributeTargets.Parameter)]
     public class BoolValueAnnotationAttribute : CustomConverterAttribute
     {
         /// <summary>

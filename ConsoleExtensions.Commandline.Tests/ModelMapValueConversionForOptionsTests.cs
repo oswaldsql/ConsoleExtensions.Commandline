@@ -1,19 +1,29 @@
-// ReSharper disable StyleCop.SA1600
-// ReSharper disable ExceptionNotDocumented
+// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="ModelMapValueConversionForOptionsTests.cs" company="Lasse Sjørup">
+//   Copyright (c) 2019 Lasse Sjørup
+//   Licensed under the MIT license. See LICENSE file in the solution root for full license information.
+// </copyright>
+// --------------------------------------------------------------------------------------------------------------------
+
 namespace ConsoleExtensions.Commandline.Tests
 {
     using System;
-    using System.ComponentModel;
-    using System.Diagnostics;
 
-    using ConsoleExtensions.Commandline.Converters;
     using ConsoleExtensions.Commandline.Exceptions;
     using ConsoleExtensions.Commandline.Parser;
 
     using Xunit;
 
+    /// <summary>
+    /// Class ModelMapValueConversionForOptionsTests.
+    /// </summary>
     public class ModelMapValueConversionForOptionsTests
     {
+        /// <summary>
+        /// Given a bool option when setting to given value then the value should be set.
+        /// </summary>
+        /// <param name="value">The value.</param>
+        /// <param name="expected">if set to <c>true</c> [expected].</param>
         [Theory]
         [InlineData("True", true)]
         [InlineData("TRUE", true)]
@@ -34,6 +44,9 @@ namespace ConsoleExtensions.Commandline.Tests
             Assert.Equal(expected, model.BoolOption);
         }
 
+        /// <summary>
+        /// Given a bool option when setting to invalid value then exception should be thrown.
+        /// </summary>
         [Fact]
         public void GivenABoolOption_WhenSettingToInvalidValue_ThenExceptionShouldBeThrown()
         {
@@ -52,6 +65,11 @@ namespace ConsoleExtensions.Commandline.Tests
             Assert.Equal("Boolean", actualException.Property.PropertyType.Name);
         }
 
+        /// <summary>
+        /// Given a enum option when setting to given value then the value should be set.
+        /// </summary>
+        /// <param name="value">The value.</param>
+        /// <param name="expected">The expected.</param>
         [Theory]
         [InlineData("monday", 1)]
         [InlineData("Monday", 1)]
@@ -70,6 +88,9 @@ namespace ConsoleExtensions.Commandline.Tests
             Assert.Equal(expected, (int)model.DayOfWeek);
         }
 
+        /// <summary>
+        /// Given a enum option when setting to invalid value then exception should be thrown.
+        /// </summary>
         [Fact]
         public void GivenAEnumOption_WhenSettingToInvalidValue_ThenExceptionShouldBeThrown()
         {
@@ -88,6 +109,9 @@ namespace ConsoleExtensions.Commandline.Tests
             Assert.Equal("DayOfWeek", actualException.Property.PropertyType.Name);
         }
 
+        /// <summary>
+        /// Given a int option when setting option to string then the correct exception is thrown value is set.
+        /// </summary>
         [Fact]
         public void GivenAIntOption_WhenSettingOptionToString_ThenTheCorrectExceptionIsThrownValueIsSet()
         {
@@ -105,6 +129,9 @@ namespace ConsoleExtensions.Commandline.Tests
             Assert.Equal("Int32", actualException.Type);
         }
 
+        /// <summary>
+        /// Given a int option when setting option to to large a number then the correct exception is thrown value is set.
+        /// </summary>
         [Fact]
         public void GivenAIntOption_WhenSettingOptionToToLargeANumber_ThenTheCorrectExceptionIsThrownValueIsSet()
         {
@@ -122,6 +149,9 @@ namespace ConsoleExtensions.Commandline.Tests
             Assert.Equal("Int32", actualException.Property.PropertyType.Name);
         }
 
+        /// <summary>
+        /// Given a int option when setting option to too large a number then the correct exception is thrown value is set.
+        /// </summary>
         [Fact]
         public void GivenAIntOption_WhenSettingOptionToTooLargeANumber_ThenTheCorrectExceptionIsThrownValueIsSet()
         {
@@ -140,6 +170,9 @@ namespace ConsoleExtensions.Commandline.Tests
             Assert.Equal("Int32", actualException.Property.PropertyType.Name);
         }
 
+        /// <summary>
+        /// Given a int value when setting option then value is set.
+        /// </summary>
         [Fact]
         public void GivenAIntValue_WhenSettingOption_ThenValueIsSet()
         {
@@ -155,6 +188,9 @@ namespace ConsoleExtensions.Commandline.Tests
             Assert.Equal(123, model.IntOption);
         }
 
+        /// <summary>
+        /// Given a string value when setting option then value is set.
+        /// </summary>
         [Fact]
         public void GivenAStringValue_WhenSettingOption_ThenValueIsSet()
         {
@@ -170,129 +206,55 @@ namespace ConsoleExtensions.Commandline.Tests
             Assert.Equal("123", model.StringOption);
         }
 
+        /// <summary>
+        /// Class Mock.
+        /// </summary>
         public class Mock
         {
+            /// <summary>
+            /// Gets or sets a value indicating whether [bool option].
+            /// </summary>
+            /// <value><c>true</c> if [bool option]; otherwise, <c>false</c>.</value>
             public bool BoolOption { get; set; }
 
+            /// <summary>
+            /// Gets or sets the day of week.
+            /// </summary>
+            /// <value>The day of week.</value>
             public DayOfWeek DayOfWeek { get; set; }
 
+            /// <summary>
+            /// Gets or sets the int option.
+            /// </summary>
+            /// <value>The int option.</value>
             public int IntOption { get; set; }
 
+            /// <summary>
+            /// Gets or sets the string option.
+            /// </summary>
+            /// <value>The string option.</value>
             public string StringOption { get; set; }
         }
 
+        /// <summary>
+        /// Class CustomType.
+        /// </summary>
         public class CustomType
         {
+            /// <summary>
+            /// Initializes a new instance of the <see cref="CustomType"/> class.
+            /// </summary>
+            /// <param name="internalValue">The internal value.</param>
             public CustomType(string internalValue)
             {
                 this.InternalValue = internalValue.ToLower();
             }
 
+            /// <summary>
+            /// Gets the internal value.
+            /// </summary>
+            /// <value>The internal value.</value>
             public string InternalValue { get;  }
-        }
-    }
-
-    public class ValueConverter
-    {
-        // Tests
-        // Can overwrite existing converters
-        // Can add custom converter
-
-        [Fact]
-        public void GivenACustomOption_WhenSettingOptionWithValueConverter_ThenValueIsSet()
-        {
-            // Arrange
-            var model = new Mock();
-            var modelMap = ModelParser.Parse(model);
-
-            modelMap.AddValueConverter(s => new CustomType(s), uri => uri.InternalValue.ToUpper());
-
-            // Act
-            modelMap.SetOption("CustomTypeOption", "CustomValue");
-
-            // Assert
-            Assert.Equal("CUSTOMVALUE", modelMap.GetOption("CustomTypeOption")[0]);
-            Assert.Equal("customvalue", model.CustomTypeOption.InternalValue);
-        }
-
-        [Fact]
-        public void GivenAExistingConverter_WhenOverwriting_ThenTheNewConverterIsUsed()
-        {
-            // Arrange
-            var model = new Mock();
-            var modelMap = ModelParser.Parse(model);
-
-            bool toObjCalled = false;
-            bool toStringCalled = false;
-
-            modelMap.AddValueConverter<int>(
-                s =>
-                    {
-                        toObjCalled = true;
-                        return int.Parse(s);
-                    },
-                o =>
-                    {
-                        toStringCalled = true;
-                        return o.ToString();
-                    });
-
-            // Act
-            modelMap.SetOption("IntOption",  "123");
-
-            // Assert
-            Assert.Equal("123", modelMap.GetOption("IntOption")[0]);
-            Assert.Equal(123, model.IntOption);
-            Assert.True(toObjCalled);
-            Assert.True(toStringCalled);
-        }
-
-        [Fact]
-        public void GivenTwoIdenticalConverters_WhenConverting_ThenTheLastAddedConverterShouldBeUsed()
-        {
-            // Arrange
-            var model = new Mock();
-            var modelMap = ModelParser.Parse(model);
-
-            bool lastConverterCalled = false;
-            bool firstConverterCalled = false;
-            modelMap.AddValueConverter(s =>
-                {
-                    firstConverterCalled = true;
-                    return new CustomType(s);
-                }, uri => throw new NotImplementedException());
-            modelMap.AddValueConverter(
-                s =>
-                    {
-                        lastConverterCalled = true;
-                        return new CustomType(s);
-                    }, uri => throw new NotImplementedException());
-
-            // Act
-            modelMap.SetOption("CustomTypeOption", "CustomValue");
-
-            // Assert
-            Assert.False(firstConverterCalled);
-            Assert.True(lastConverterCalled);
-        }
-
-
-
-        public class Mock
-        {
-            public int IntOption { get; set; }
-
-            public CustomType CustomTypeOption { get; set; }
-        }
-
-        public class CustomType
-        {
-            public CustomType(string internalValue)
-            {
-                this.InternalValue = internalValue.ToLower();
-            }
-
-            public string InternalValue { get; }
         }
     }
 }
