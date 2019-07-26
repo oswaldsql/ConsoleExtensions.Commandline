@@ -49,7 +49,8 @@ namespace ConsoleExtensions.Commandline.Parser
                 new EnumConverter(),
                 new ConvertibleConverter(),
                 new IoConverter(),
-                new BoolConverter());
+                new BoolConverter(),
+                new TimeSpanValueConverter());
         }
 
         /// <summary>

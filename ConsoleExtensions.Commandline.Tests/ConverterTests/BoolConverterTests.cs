@@ -173,7 +173,6 @@ namespace ConsoleExtensions.Commandline.Tests.ConverterTests
             Assert.Equal(expected, actual);
         }
 
-
         public class Mock
         {
             public bool BoolValue { get; set; }

@@ -171,6 +171,126 @@
             <returns>A object of the specified type.</returns>
             <exception cref="T:System.ArgumentException">Thrown if the conversion was not a success.</exception>
         </member>
+        <member name="T:ConsoleExtensions.Commandline.Converters.ConverterPriority">
+            <summary>
+            Enum ConverterPriority
+            </summary>
+        </member>
+        <member name="F:ConsoleExtensions.Commandline.Converters.ConverterPriority.First">
+            <summary>
+            First priority. Converters with this priority are executed first. Custom converters are given this priority.
+            </summary>
+        </member>
+        <member name="F:ConsoleExtensions.Commandline.Converters.ConverterPriority.Sooner">
+            <summary>
+            The sooner priority. Converters with this priority are executed before the default converters.
+            </summary>
+        </member>
+        <member name="F:ConsoleExtensions.Commandline.Converters.ConverterPriority.Default">
+            <summary>
+            The default priority. This is the priority of standard converters.
+            </summary>
+        </member>
+        <member name="F:ConsoleExtensions.Commandline.Converters.ConverterPriority.Later">
+            <summary>
+            The later priority. Converters with this priority are executed after the default converters.
+            </summary>
+        </member>
+        <member name="F:ConsoleExtensions.Commandline.Converters.ConverterPriority.Last">
+            <summary>
+            The last priority. Converters with this priority are executed after all other converters.
+            </summary>
+        </member>
+        <member name="T:ConsoleExtensions.Commandline.Converters.ConvertibleConverter">
+            <summary>
+                Class ConvertibleConverter. Converts objects of types that implements the IConvertible class.
+                Implements the <see cref="T:ConsoleExtensions.Commandline.Converters.IValueConverter" />
+            </summary>
+            <seealso cref="T:ConsoleExtensions.Commandline.Converters.IValueConverter" />
+        </member>
+        <member name="P:ConsoleExtensions.Commandline.Converters.ConvertibleConverter.Priority">
+            <summary>
+                Gets the priority of the converter.
+            </summary>
+        </member>
+        <member name="M:ConsoleExtensions.Commandline.Converters.ConvertibleConverter.CanConvert(System.Type)">
+            <summary>
+                Determines whether this instance can convert the specified type.
+            </summary>
+            <param name="type">The type.</param>
+            <returns><c>true</c> if this instance can convert the specified type; otherwise, <c>false</c>.</returns>
+        </member>
+        <member name="M:ConsoleExtensions.Commandline.Converters.ConvertibleConverter.ConvertToString(System.Object,System.Reflection.ICustomAttributeProvider)">
+            <summary>
+                Converts a value to a string.
+            </summary>
+            <param name="source">The source.</param>
+            <param name="customAttributeProvider">The custom attribute provider.</param>
+            <returns>A <see cref="T:System.String" /> that represents this instance.</returns>
+        </member>
+        <member name="M:ConsoleExtensions.Commandline.Converters.ConvertibleConverter.ConvertToValue(System.String,System.Type,System.Reflection.ICustomAttributeProvider)">
+            <summary>
+                Converts a string to a value of the specified type.
+            </summary>
+            <param name="source">The source.</param>
+            <param name="type">The type.</param>
+            <param name="customAttributeProvider">The custom attribute provider.</param>
+            <returns>A object of the specified type.</returns>
+        </member>
+        <member name="T:ConsoleExtensions.Commandline.Converters.CustomValueConverter`1">
+            <summary>
+                Class CustomValueConverter. Converts to and from a string to a objects.
+                Implements the <see cref="T:ConsoleExtensions.Commandline.Converters.IValueConverter" />
+            </summary>
+            <typeparam name="T">The type of object to converts to and from.</typeparam>
+            <seealso cref="T:ConsoleExtensions.Commandline.Converters.IValueConverter" />
+        </member>
+        <member name="F:ConsoleExtensions.Commandline.Converters.CustomValueConverter`1.toString">
+            <summary>
+                The function used when converting to string.
+            </summary>
+        </member>
+        <member name="F:ConsoleExtensions.Commandline.Converters.CustomValueConverter`1.toValue">
+            <summary>
+                The function used when converting to object.
+            </summary>
+        </member>
+        <member name="M:ConsoleExtensions.Commandline.Converters.CustomValueConverter`1.#ctor(System.Func{System.String,`0},System.Func{`0,System.String})">
+            <summary>
+                Initializes a new instance of the <see cref="T:ConsoleExtensions.Commandline.Converters.CustomValueConverter`1" /> class.
+            </summary>
+            <param name="toValue">The function used when converting to object.</param>
+            <param name="toString">The function used when converting to string.</param>
+        </member>
+        <member name="P:ConsoleExtensions.Commandline.Converters.CustomValueConverter`1.Priority">
+            <summary>
+                Gets the priority of the converter.
+            </summary>
+        </member>
+        <member name="M:ConsoleExtensions.Commandline.Converters.CustomValueConverter`1.CanConvert(System.Type)">
+            <summary>
+                Determines whether this instance can convert the specified type.
+            </summary>
+            <param name="type">The type.</param>
+            <returns><c>true</c> if this instance can convert the specified type; otherwise, <c>false</c>.</returns>
+        </member>
+        <member name="M:ConsoleExtensions.Commandline.Converters.CustomValueConverter`1.ConvertToString(System.Object,System.Reflection.ICustomAttributeProvider)">
+            <summary>
+                Returns a <see cref="T:System.String" /> that represents the source.
+            </summary>
+            <param name="source">The source.</param>
+            <param name="customAttributeProvider">The custom attribute provider.</param>
+            <returns>A <see cref="T:System.String" /> that represents this instance.</returns>
+        </member>
+        <member name="M:ConsoleExtensions.Commandline.Converters.CustomValueConverter`1.ConvertToValue(System.String,System.Type,System.Reflection.ICustomAttributeProvider)">
+            <summary>
+                Converts a string to a value of the specified type.
+            </summary>
+            <param name="source">The source.</param>
+            <param name="type">The type.</param>
+            <param name="customAttributeProvider">The custom attribute provider.</param>
+            <returns>A object of the specified type.</returns>
+        </member>
         <member name="T:ConsoleExtensions.Commandline.Converters.BoolValueAnnotationAttribute">
             <summary>
                 Class BoolValueAnnotationAttribute. Implements the
@@ -238,72 +358,6 @@
                 A object of the specified type.
             </returns>
         </member>
-        <member name="T:ConsoleExtensions.Commandline.Converters.ConverterPriority">
-            <summary>
-            Enum ConverterPriority
-            </summary>
-        </member>
-        <member name="F:ConsoleExtensions.Commandline.Converters.ConverterPriority.First">
-            <summary>
-            First priority. Converters with this priority are executed first. Custom converters are given this priority.
-            </summary>
-        </member>
-        <member name="F:ConsoleExtensions.Commandline.Converters.ConverterPriority.Sooner">
-            <summary>
-            The sooner priority. Converters with this priority are executed before the default converters.
-            </summary>
-        </member>
-        <member name="F:ConsoleExtensions.Commandline.Converters.ConverterPriority.Default">
-            <summary>
-            The default priority. This is the priority of standard converters.
-            </summary>
-        </member>
-        <member name="F:ConsoleExtensions.Commandline.Converters.ConverterPriority.Later">
-            <summary>
-            The later priority. Converters with this priority are executed after the default converters.
-            </summary>
-        </member>
-        <member name="F:ConsoleExtensions.Commandline.Converters.ConverterPriority.Last">
-            <summary>
-            The last priority. Converters with this priority are executed after all other converters.
-            </summary>
-        </member>
-        <member name="T:ConsoleExtensions.Commandline.Converters.ConvertibleConverter">
-            <summary>
-                Class ConvertibleConverter. Converts objects of types that implements the IConvertible class.
-                Implements the <see cref="T:ConsoleExtensions.Commandline.Converters.IValueConverter" />
-            </summary>
-            <seealso cref="T:ConsoleExtensions.Commandline.Converters.IValueConverter" />
-        </member>
-        <member name="P:ConsoleExtensions.Commandline.Converters.ConvertibleConverter.Priority">
-            <summary>
-                Gets the priority of the converter.
-            </summary>
-        </member>
-        <member name="M:ConsoleExtensions.Commandline.Converters.ConvertibleConverter.CanConvert(System.Type)">
-            <summary>
-                Determines whether this instance can convert the specified type.
-            </summary>
-            <param name="type">The type.</param>
-            <returns><c>true</c> if this instance can convert the specified type; otherwise, <c>false</c>.</returns>
-        </member>
-        <member name="M:ConsoleExtensions.Commandline.Converters.ConvertibleConverter.ConvertToString(System.Object,System.Reflection.ICustomAttributeProvider)">
-            <summary>
-                Converts a value to a string.
-            </summary>
-            <param name="source">The source.</param>
-            <param name="customAttributeProvider">The custom attribute provider.</param>
-            <returns>A <see cref="T:System.String" /> that represents this instance.</returns>
-        </member>
-        <member name="M:ConsoleExtensions.Commandline.Converters.ConvertibleConverter.ConvertToValue(System.String,System.Type,System.Reflection.ICustomAttributeProvider)">
-            <summary>
-                Converts a string to a value of the specified type.
-            </summary>
-            <param name="source">The source.</param>
-            <param name="type">The type.</param>
-            <param name="customAttributeProvider">The custom attribute provider.</param>
-            <returns>A object of the specified type.</returns>
-        </member>
         <member name="T:ConsoleExtensions.Commandline.Converters.CustomConverterAttribute">
             <summary>
             Class CustomConverterAttribute. Implements the
@@ -334,60 +388,6 @@
             </summary>
             <param name="value">The value.</param>
             <param name="type">The type.</param>
-            <returns>A object of the specified type.</returns>
-        </member>
-        <member name="T:ConsoleExtensions.Commandline.Converters.CustomValueConverter`1">
-            <summary>
-                Class CustomValueConverter. Converts to and from a string to a objects.
-                Implements the <see cref="T:ConsoleExtensions.Commandline.Converters.IValueConverter" />
-            </summary>
-            <typeparam name="T">The type of object to converts to and from.</typeparam>
-            <seealso cref="T:ConsoleExtensions.Commandline.Converters.IValueConverter" />
-        </member>
-        <member name="F:ConsoleExtensions.Commandline.Converters.CustomValueConverter`1.toString">
-            <summary>
-                The function used when converting to string.
-            </summary>
-        </member>
-        <member name="F:ConsoleExtensions.Commandline.Converters.CustomValueConverter`1.toValue">
-            <summary>
-                The function used when converting to object.
-            </summary>
-        </member>
-        <member name="M:ConsoleExtensions.Commandline.Converters.CustomValueConverter`1.#ctor(System.Func{System.String,`0},System.Func{`0,System.String})">
-            <summary>
-                Initializes a new instance of the <see cref="T:ConsoleExtensions.Commandline.Converters.CustomValueConverter`1" /> class.
-            </summary>
-            <param name="toValue">The function used when converting to object.</param>
-            <param name="toString">The function used when converting to string.</param>
-        </member>
-        <member name="P:ConsoleExtensions.Commandline.Converters.CustomValueConverter`1.Priority">
-            <summary>
-                Gets the priority of the converter.
-            </summary>
-        </member>
-        <member name="M:ConsoleExtensions.Commandline.Converters.CustomValueConverter`1.CanConvert(System.Type)">
-            <summary>
-                Determines whether this instance can convert the specified type.
-            </summary>
-            <param name="type">The type.</param>
-            <returns><c>true</c> if this instance can convert the specified type; otherwise, <c>false</c>.</returns>
-        </member>
-        <member name="M:ConsoleExtensions.Commandline.Converters.CustomValueConverter`1.ConvertToString(System.Object,System.Reflection.ICustomAttributeProvider)">
-            <summary>
-                Returns a <see cref="T:System.String" /> that represents the source.
-            </summary>
-            <param name="source">The source.</param>
-            <param name="customAttributeProvider">The custom attribute provider.</param>
-            <returns>A <see cref="T:System.String" /> that represents this instance.</returns>
-        </member>
-        <member name="M:ConsoleExtensions.Commandline.Converters.CustomValueConverter`1.ConvertToValue(System.String,System.Type,System.Reflection.ICustomAttributeProvider)">
-            <summary>
-                Converts a string to a value of the specified type.
-            </summary>
-            <param name="source">The source.</param>
-            <param name="type">The type.</param>
-            <param name="customAttributeProvider">The custom attribute provider.</param>
             <returns>A object of the specified type.</returns>
         </member>
         <member name="T:ConsoleExtensions.Commandline.Converters.EnumConverter">
@@ -492,6 +492,43 @@
         <member name="M:ConsoleExtensions.Commandline.Converters.IValueConverter.ConvertToValue(System.String,System.Type,System.Reflection.ICustomAttributeProvider)">
             <summary>
                 Converts a string to a value of the specified type.
+            </summary>
+            <param name="source">The source.</param>
+            <param name="type">The type.</param>
+            <param name="customAttributeProvider">The custom attribute provider.</param>
+            <returns>A object of the specified type.</returns>
+        </member>
+        <member name="T:ConsoleExtensions.Commandline.Converters.TimeSpanValueConverter">
+            <summary>
+            Class TimeSpanValueConverter.
+            Implements the <see cref="T:ConsoleExtensions.Commandline.Converters.IValueConverter" />
+            </summary>
+            <seealso cref="T:ConsoleExtensions.Commandline.Converters.IValueConverter" />
+        </member>
+        <member name="P:ConsoleExtensions.Commandline.Converters.TimeSpanValueConverter.Priority">
+            <summary>
+            Gets the priority of the converter.
+            </summary>
+            <value>The priority.</value>
+        </member>
+        <member name="M:ConsoleExtensions.Commandline.Converters.TimeSpanValueConverter.CanConvert(System.Type)">
+            <summary>
+            Determines whether this instance can convert the specified type.
+            </summary>
+            <param name="type">The type.</param>
+            <returns><c>true</c> if this instance can convert the specified type; otherwise, <c>false</c>.</returns>
+        </member>
+        <member name="M:ConsoleExtensions.Commandline.Converters.TimeSpanValueConverter.ConvertToString(System.Object,System.Reflection.ICustomAttributeProvider)">
+            <summary>
+            Converts a value to a string.
+            </summary>
+            <param name="source">The source.</param>
+            <param name="customAttributeProvider">The custom attribute provider.</param>
+            <returns>A <see cref="T:System.String" /> that represents this instance.</returns>
+        </member>
+        <member name="M:ConsoleExtensions.Commandline.Converters.TimeSpanValueConverter.ConvertToValue(System.String,System.Type,System.Reflection.ICustomAttributeProvider)">
+            <summary>
+            Converts a string to a value of the specified type.
             </summary>
             <param name="source">The source.</param>
             <param name="type">The type.</param>
