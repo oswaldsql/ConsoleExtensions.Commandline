@@ -13,8 +13,7 @@ namespace ConsoleExtensions.Commandline.Tests
     using ConsoleExtensions.Commandline.Help;
 
     /// <summary>
-    ///     Class DetailsComparer. Implements the
-    ///     <see cref="System.Collections.Generic.IEqualityComparer{ArgumentDetails}" />
+    ///     Class DetailsComparer. Implements the IEqualityComparer
     /// </summary>
     /// <seealso cref="!:System.Collections.Generic.IEqualityComparer{ArgumentDetails}" />
     public class DetailsComparer : IEqualityComparer<ArgumentDetails>
@@ -30,6 +29,11 @@ namespace ConsoleExtensions.Commandline.Tests
         /// </returns>
         public bool Equals(ArgumentDetails x, ArgumentDetails y)
         {
+            if (x == null || y == null)
+            {
+                return false;
+            }
+
             return x.Name == y.Name && x.DisplayName == y.DisplayName && x.Description == y.Description
                    && x.Optional == y.Optional && x.Type == y.Type
                    && ((x.DefaultValue == null && y.DefaultValue == null) || x.DefaultValue.Equals(y.DefaultValue));

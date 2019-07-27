@@ -4,6 +4,7 @@
 //   Licensed under the MIT license. See LICENSE file in the solution root for full license information.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
+
 namespace ConsoleExtensions.Commandline.Tests.ValidatorTests
 {
     using ConsoleExtensions.Commandline.Exceptions;
@@ -13,14 +14,13 @@ namespace ConsoleExtensions.Commandline.Tests.ValidatorTests
     using Xunit;
 
     /// <summary>
-    /// Class MinMaxValidatorTests. Tests the Min Max Validator.
+    ///     Class MinMaxValidatorTests. Tests the Min Max Validator.
     /// </summary>
     public class MinMaxValidatorTests
     {
         /// <summary>
-        /// Given a property not implementing comparable
-        /// when validating minimum maximum
-        /// then exception should be thrown.
+        ///     Given a property not implementing comparable when validating
+        ///     minimum maximum then exception should be thrown.
         /// </summary>
         [Fact]
         public void GivenAPropertyNotImplementingComparable_WhenValidatingMinMax_ThenExceptionShouldBeThrown()
@@ -38,9 +38,9 @@ namespace ConsoleExtensions.Commandline.Tests.ValidatorTests
         }
 
         /// <summary>
-        /// Given a property with a minimum maximum validation
-        /// when setting the value outside the range
-        /// then argument exception is thrown.
+        ///     Given a property with a minimum maximum validation when setting
+        ///     the <paramref name="value" /> outside the range then argument
+        ///     exception is thrown.
         /// </summary>
         /// <param name="value">The value.</param>
         [Theory]
@@ -63,9 +63,8 @@ namespace ConsoleExtensions.Commandline.Tests.ValidatorTests
         }
 
         /// <summary>
-        /// Given a property with a minimum maximum validation
-        /// when setting the value within range
-        /// then the value is set.
+        ///     Given a property with a minimum maximum validation when setting
+        ///     the value within range then the value is set.
         /// </summary>
         [Fact]
         public void GivenAPropertyWithAMinMaxValidation_WhenSettingTheValueWithinRange_ThenTheValueIsSet()
@@ -82,21 +81,25 @@ namespace ConsoleExtensions.Commandline.Tests.ValidatorTests
         }
 
         /// <summary>
-        /// Class Mock.
+        ///     Class Mock.
         /// </summary>
         public class Mock
         {
             /// <summary>
-            /// Gets or sets a value indicating whether [bool value].
+            ///     Gets or sets a value indicating whether [bool value].
             /// </summary>
-            /// <value><c>true</c> if [bool value]; otherwise, <c>false</c>.</value>
+            /// <value>
+            ///     <c>true</c> if [bool value]; otherwise, <c>false</c> .
+            /// </value>
             [MinMaxValidator(10, 20)]
             public bool BoolValue { get; set; }
 
             /// <summary>
-            /// Gets or sets the int value.
+            ///     Gets or sets the <see langword="int" /> value.
             /// </summary>
-            /// <value>The int value.</value>
+            /// <value>
+            ///     The <see langword="int" /> value.
+            /// </value>
             [MinMaxValidator(10, 23)]
             public int IntValue { get; set; }
         }

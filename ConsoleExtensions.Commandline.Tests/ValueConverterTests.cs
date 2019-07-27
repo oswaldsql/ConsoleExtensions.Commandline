@@ -19,8 +19,7 @@ namespace ConsoleExtensions.Commandline.Tests
     public class ValueConverterTests
     {
         /// <summary>
-        ///     Given a custom option when setting option with value converter
-        ///     then value is set.
+        ///     Given a custom option when setting option with value converter then value is set.
         /// </summary>
         [Fact]
         public void GivenACustomOption_WhenSettingOptionWithValueConverter_ThenValueIsSet()

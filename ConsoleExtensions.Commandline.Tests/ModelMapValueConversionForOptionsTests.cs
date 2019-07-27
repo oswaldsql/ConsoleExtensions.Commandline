@@ -23,7 +23,7 @@ namespace ConsoleExtensions.Commandline.Tests
         /// Given a bool option when setting to given value then the value should be set.
         /// </summary>
         /// <param name="value">The value.</param>
-        /// <param name="expected">if set to <c>true</c> [expected].</param>
+        /// <param name="expected">The expected result.</param>
         [Theory]
         [InlineData("True", true)]
         [InlineData("TRUE", true)]
@@ -207,6 +207,27 @@ namespace ConsoleExtensions.Commandline.Tests
         }
 
         /// <summary>
+        /// Class CustomType.
+        /// </summary>
+        public class CustomType
+        {
+            /// <summary>
+            /// Initializes a new instance of the <see cref="CustomType"/> class.
+            /// </summary>
+            /// <param name="internalValue">The internal value.</param>
+            public CustomType(string internalValue)
+            {
+                this.InternalValue = internalValue.ToLower();
+            }
+
+            /// <summary>
+            /// Gets the internal value.
+            /// </summary>
+            /// <value>The internal value.</value>
+            public string InternalValue { get; }
+        }
+
+        /// <summary>
         /// Class Mock.
         /// </summary>
         public class Mock
@@ -234,27 +255,6 @@ namespace ConsoleExtensions.Commandline.Tests
             /// </summary>
             /// <value>The string option.</value>
             public string StringOption { get; set; }
-        }
-
-        /// <summary>
-        /// Class CustomType.
-        /// </summary>
-        public class CustomType
-        {
-            /// <summary>
-            /// Initializes a new instance of the <see cref="CustomType"/> class.
-            /// </summary>
-            /// <param name="internalValue">The internal value.</param>
-            public CustomType(string internalValue)
-            {
-                this.InternalValue = internalValue.ToLower();
-            }
-
-            /// <summary>
-            /// Gets the internal value.
-            /// </summary>
-            /// <value>The internal value.</value>
-            public string InternalValue { get;  }
         }
     }
 }

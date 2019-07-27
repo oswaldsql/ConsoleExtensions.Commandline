@@ -4,8 +4,6 @@
 //   Licensed under the MIT license. See LICENSE file in the solution root for full license information.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
-// ReSharper disable StyleCop.SA1630
-// ReSharper disable StringLiteralsWordIsNotInDictionary
 
 namespace ConsoleExtensions.Commandline.Tests
 {
