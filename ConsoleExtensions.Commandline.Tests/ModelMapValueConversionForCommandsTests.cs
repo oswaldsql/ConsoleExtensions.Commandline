@@ -1,5 +1,10 @@
-// ReSharper disable StyleCop.SA1600
-// ReSharper disable ExceptionNotDocumented
+// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="ModelMapValueConversionForCommandsTests.cs" company="Lasse Sjørup">
+//   Copyright (c) 2019 Lasse Sjørup
+//   Licensed under the MIT license. See LICENSE file in the solution root for full license information.
+// </copyright>
+// --------------------------------------------------------------------------------------------------------------------
+
 namespace ConsoleExtensions.Commandline.Tests
 {
     using System;
@@ -9,8 +14,18 @@ namespace ConsoleExtensions.Commandline.Tests
 
     using Xunit;
 
+    /// <summary>
+    ///     Class ModelMapValueConversionForCommandsTests.
+    /// </summary>
     public class ModelMapValueConversionForCommandsTests
     {
+        /// <summary>
+        ///     Given a <see langword="bool" /> option when setting to given
+        ///     <paramref name="value" /> then the <paramref name="value" />
+        ///     should be set.
+        /// </summary>
+        /// <param name="value">The value.</param>
+        /// <param name="expected">The expected value.</param>
         [Theory]
         [InlineData("True", true)]
         [InlineData("TRUE", true)]
@@ -31,6 +46,10 @@ namespace ConsoleExtensions.Commandline.Tests
             Assert.Equal(expected.ToString(), actual);
         }
 
+        /// <summary>
+        ///     Given a <see langword="bool" /> option when setting to invalid
+        ///     value then exception should be thrown.
+        /// </summary>
         [Fact]
         public void GivenABoolOption_WhenSettingToInvalidValue_ThenExceptionShouldBeThrown()
         {
@@ -49,6 +68,13 @@ namespace ConsoleExtensions.Commandline.Tests
             Assert.Equal("Boolean", actualException.ParameterInfo.ParameterType.Name);
         }
 
+        /// <summary>
+        ///     Given a <see langword="enum" /> option when setting to given
+        ///     <paramref name="value" /> then the <paramref name="value" />
+        ///     should be set.
+        /// </summary>
+        /// <param name="value">The value.</param>
+        /// <param name="expected">The expected value.</param>
         [Theory]
         [InlineData("monday", 1)]
         [InlineData("Monday", 1)]
@@ -67,6 +93,10 @@ namespace ConsoleExtensions.Commandline.Tests
             Assert.Equal(expected.ToString(), actual);
         }
 
+        /// <summary>
+        ///     Given a <see langword="enum" /> option when setting to invalid
+        ///     value then exception should be thrown.
+        /// </summary>
         [Fact]
         public void GivenAEnumOption_WhenSettingToInvalidValue_ThenExceptionShouldBeThrown()
         {
@@ -85,6 +115,10 @@ namespace ConsoleExtensions.Commandline.Tests
             Assert.Equal("DayOfWeek", actualException.ParameterInfo.ParameterType.Name);
         }
 
+        /// <summary>
+        ///     Given a <see langword="int" /> option when setting option to
+        ///     string then the correct exception is thrown value is set.
+        /// </summary>
         [Fact]
         public void GivenAIntOption_WhenSettingOptionToString_ThenTheCorrectExceptionIsThrownValueIsSet()
         {
@@ -92,7 +126,7 @@ namespace ConsoleExtensions.Commandline.Tests
             var modelMap = ModelParser.Parse(new Mock());
 
             // Act
-            var actual = Record.Exception(() => modelMap.Invoke("IntMethod",  "abc"));
+            var actual = Record.Exception(() => modelMap.Invoke("IntMethod", "abc"));
 
             // Assert
             Assert.IsType<InvalidParameterFormatException>(actual);
@@ -102,6 +136,11 @@ namespace ConsoleExtensions.Commandline.Tests
             Assert.Equal("Int32", actualException.ParameterInfo.ParameterType.Name);
         }
 
+        /// <summary>
+        ///     Given a <see langword="int" /> option when setting option to to
+        ///     large a number then the correct exception is thrown value is
+        ///     set.
+        /// </summary>
         [Fact]
         public void GivenAIntOption_WhenSettingOptionToToLargeANumber_ThenTheCorrectExceptionIsThrownValueIsSet()
         {
@@ -119,6 +158,11 @@ namespace ConsoleExtensions.Commandline.Tests
             Assert.Equal("Int32", actualException.ParameterInfo.ParameterType.Name);
         }
 
+        /// <summary>
+        ///     Given a <see langword="int" /> option when setting option to too
+        ///     large a number then the correct exception is thrown value is
+        ///     set.
+        /// </summary>
         [Fact]
         public void GivenAIntOption_WhenSettingOptionToTooLargeANumber_ThenTheCorrectExceptionIsThrownValueIsSet()
         {
@@ -137,6 +181,10 @@ namespace ConsoleExtensions.Commandline.Tests
             Assert.Equal("Int32", actualException.ParameterInfo.ParameterType.Name);
         }
 
+        /// <summary>
+        ///     Given a <see langword="int" /> value when setting option then
+        ///     value is set.
+        /// </summary>
         [Fact]
         public void GivenAIntValue_WhenSettingOption_ThenValueIsSet()
         {
@@ -151,21 +199,50 @@ namespace ConsoleExtensions.Commandline.Tests
             Assert.Equal("123", actual);
         }
 
+        /// <summary>
+        ///     Class Mock.
+        /// </summary>
         public class Mock
         {
-            public string IntMethod(int value)
-            {
-                return value.ToString();
-            }
-
+            /// <summary>
+            ///     Method taking a <see langword="bool" />
+            ///     <paramref name="value" /> and returning the string
+            ///     representation.
+            /// </summary>
+            /// <param name="value">if set to <c>true</c> [value].</param>
+            /// <returns>
+            ///     The string representation.
+            /// </returns>
             public string BoolMethod(bool value)
             {
                 return value.ToString();
             }
 
+            /// <summary>
+            ///     Method taking a DayOfWeek <paramref name="value" /> and
+            ///     returning the string representation.
+            /// </summary>
+            /// <param name="value">The value.</param>
+            /// <returns>
+            ///     The string representation.
+            /// </returns>
             public string DayOfWeekMethod(DayOfWeek value)
             {
                 return ((int)value).ToString();
+            }
+
+            /// <summary>
+            ///     Method taking a <see langword="int" />
+            ///     <paramref name="value" /> and returning the string
+            ///     representation.
+            /// </summary>
+            /// <param name="value">The value.</param>
+            /// <returns>
+            ///     The string representation.
+            /// </returns>
+            public string IntMethod(int value)
+            {
+                return value.ToString();
             }
         }
     }

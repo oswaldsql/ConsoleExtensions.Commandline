@@ -7,10 +7,7 @@
 
 namespace ConsoleExtensions.Commandline.Parser
 {
-    using System;
     using System.Reflection;
-
-    using ConsoleExtensions.Commandline.Exceptions;
 
     /// <summary>
     ///     Class ModelOption.
@@ -59,41 +56,20 @@ namespace ConsoleExtensions.Commandline.Parser
         ///     Returns the currents value of the option.
         /// </summary>
         /// <returns>A string representing the value.</returns>
-        public string CurrentValue()
+        public object CurrentValue()
         {
-            // TODO : Add Value converter logic.
             // TODO : catch all the exceptions that can occur and map them
-            return this.Property.GetMethod.Invoke(this.Source, new object[0]).ToString();
+            return this.Property.GetMethod.Invoke(this.Source, new object[0]);
         }
 
         /// <summary>
-        ///     Sets the specified property to the value, converting the value as needed.
+        ///     Sets the specified value.
         /// </summary>
-        /// <param name="stringValue">The string value.</param>
-        /// <exception cref="InvalidArgumentFormatException">Thrown if the value conversation failed.</exception>
-        public void Set(string stringValue)
+        /// <param name="value">The value.</param>
+        public void Set(object value)
         {
-            // TODO : Add Value converter logic.
-            object o;
-
-            try
-            {
-                if (this.Property.PropertyType.IsEnum)
-                {
-                    o = Enum.Parse(this.Property.PropertyType, stringValue, true);
-                }
-                else
-                {
-                    o = Convert.ChangeType(stringValue, this.Property.PropertyType);
-                }
-            }
-            catch (Exception e)
-            {
-                throw new InvalidArgumentFormatException(stringValue, this.Property, e);
-            }
-
             // TODO : catch all the exceptions that can occur and map them
-            this.Property.SetMethod.Invoke(this.Source, new[] { o });
+            this.Property.SetMethod.Invoke(this.Source, new[] { value });
         }
     }
 }

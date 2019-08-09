@@ -5,6 +5,10 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
+using System.Runtime.CompilerServices;
+
+[assembly: InternalsVisibleTo("ConsoleExtensions.Commandline.Tests")]
+
 namespace ConsoleExtensions.Commandline
 {
     using System;
@@ -28,17 +32,28 @@ namespace ConsoleExtensions.Commandline
         private readonly Template resultTemplate;
 
         /// <summary>
-        ///     Initializes a new instance of the <see cref="Controller" /> class.
+        ///     Initializes a new instance of the Controller class.
         /// </summary>
         /// <param name="model">The model.</param>
         /// <param name="setup">
-        ///     The setup. Optional overwrite of the extensions added to the console. Is not specified the Default
-        ///     setup is applied.
+        ///     The setup. Optional overwrite of the extensions added to the
+        ///     console. Is not specified the Default setup is applied.
         /// </param>
         public Controller(object model, Action<Controller> setup = null)
+            : this(model, ConsoleProxy.Instance(), setup)
+        {
+        }
+
+        /// <summary>
+        ///     Initializes a new instance of the Controller class.
+        /// </summary>
+        /// <param name="model">The model.</param>
+        /// <param name="proxy">The proxy.</param>
+        /// <param name="setup">The setup. Optional overwrite of the extensions added to the console. Is not specified the Default setup is applied.</param>
+        internal Controller(object model, IConsoleProxy proxy, Action<Controller> setup = null)
         {
             this.Model = model;
-            this.Proxy = ConsoleProxy.Instance();
+            this.Proxy = proxy;
             this.TemplateParser = new TemplateParser();
 
             this.ModelMap = ModelParser.Parse(this.Model);
@@ -56,7 +71,8 @@ namespace ConsoleExtensions.Commandline
         public object Model { get; }
 
         /// <summary>
-        ///     Gets the model map used to map commands and options to methods and properties.
+        ///     Gets the model map used to map commands and options to methods
+        ///     and properties.
         /// </summary>
         public ModelMap ModelMap { get; }
 
@@ -66,12 +82,13 @@ namespace ConsoleExtensions.Commandline
         public IConsoleProxy Proxy { get; }
 
         /// <summary>
-        ///     Gets the template parser used to present results of command and exceptions.
+        ///     Gets the template parser used to present results of command and
+        ///     exceptions.
         /// </summary>
         public TemplateParser TemplateParser { get; }
 
         /// <summary>
-        ///     Instantiates a new controller with the model and standard setup and runs the arguments against the model.
+        ///     Instantiates a new controller with the model and standard setup and runs the arguments      against the model.
         /// </summary>
         /// <param name="model">The model.</param>
         /// <param name="args">The arguments.</param>
@@ -89,9 +106,12 @@ namespace ConsoleExtensions.Commandline
         ///     Runs the specified arguments against the controllers model.
         /// </summary>
         /// <param name="args">The arguments.</param>
-        public void Run(string[] args = null)
+        public void Run(params string[] args)
         {
-            args = args ?? Environment.GetCommandLineArgs().Skip(1).ToArray();
+            if (args.Length == 0)
+            {
+                args = Environment.GetCommandLineArgs().Skip(1).ToArray();
+            }
 
             try
             {
@@ -106,7 +126,7 @@ namespace ConsoleExtensions.Commandline
 
                 foreach (var argument in arguments.Properties)
                 {
-                    this.ModelMap[argument.Key] = argument.Value.FirstOrDefault();
+                    this.ModelMap.SetOption(argument.Key, argument.Value.ToArray());
                 }
 
                 var result = this.ModelMap.Invoke(arguments.Command, arguments.Arguments);
@@ -129,11 +149,15 @@ namespace ConsoleExtensions.Commandline
         }
 
         /// <summary>
-        ///     Validates the arguments against model.
+        ///     Validates the <paramref name="arguments" /> against model.
         /// </summary>
         /// <param name="arguments">The arguments.</param>
-        /// <exception cref="UnknownOptionException">Thrown when a requested options is unknown.</exception>
-        /// <exception cref="UnknownCommandException">Thrown when a requested command is unknown.</exception>
+        /// <exception cref="ConsoleExtensions.Commandline.Exceptions.UnknownOptionException">
+        ///     Thrown when a requested options is unknown.
+        /// </exception>
+        /// <exception cref="ConsoleExtensions.Commandline.Exceptions.UnknownCommandException">
+        ///     Thrown when a requested command is unknown.
+        /// </exception>
         private void ValidateArgumentsAgainstModel(ParsedArguments arguments)
         {
             foreach (var argument in arguments.Properties)

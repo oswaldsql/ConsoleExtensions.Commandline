@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="CustomValueConverter.cs" company="Lasse Sjørup">
+// <copyright file="BoolConverter.cs" company="Lasse Sjørup">
 //   Copyright (c) 2019 Lasse Sjørup
 //   Licensed under the MIT license. See LICENSE file in the solution root for full license information.
 // </copyright>
@@ -8,41 +8,45 @@
 namespace ConsoleExtensions.Commandline.Converters
 {
     using System;
+    using System.Collections.Generic;
     using System.Reflection;
 
     /// <summary>
-    ///     Class CustomValueConverter. Converts to and from a string to a objects.
+    ///     Class BoolConverter. Converts string to and from bool values.
     ///     Implements the <see cref="IValueConverter" />
+    ///     Implements the <see cref="ConsoleExtensions.Commandline.Converters.IValueConverter" />
     /// </summary>
-    /// <typeparam name="T">The type of object to converts to and from.</typeparam>
+    /// <seealso cref="ConsoleExtensions.Commandline.Converters.IValueConverter" />
     /// <seealso cref="IValueConverter" />
-    public class CustomValueConverter<T> : IValueConverter
+    public class BoolConverter : IValueConverter
     {
         /// <summary>
-        ///     The function used when converting to string.
+        ///     The value mapper containing all default mappings.
         /// </summary>
-        private readonly Func<object, string> toString;
+        private static readonly Dictionary<string, bool> ValueMapper =
+            new Dictionary<string, bool>(StringComparer.InvariantCultureIgnoreCase);
 
         /// <summary>
-        ///     The function used when converting to object.
+        ///     Initializes static members of the <see cref="BoolConverter" /> class.
         /// </summary>
-        private readonly Func<string, object> toValue;
-
-        /// <summary>
-        ///     Initializes a new instance of the <see cref="CustomValueConverter{T}" /> class.
-        /// </summary>
-        /// <param name="toValue">The function used when converting to object.</param>
-        /// <param name="toString">The function used when converting to string.</param>
-        public CustomValueConverter(Func<string, T> toValue, Func<T, string> toString)
+        static BoolConverter()
         {
-            this.toString = o => toString((T)o);
-            this.toValue = s => toValue(s);
+            ValueMapper.Add(string.Empty, true);
+            ValueMapper.Add("true", true);
+            ValueMapper.Add("1", true);
+            ValueMapper.Add("on", true);
+            ValueMapper.Add("yes", true);
+
+            ValueMapper.Add("false", false);
+            ValueMapper.Add("0", false);
+            ValueMapper.Add("off", false);
+            ValueMapper.Add("no", false);
         }
 
         /// <summary>
         ///     Gets the priority of the converter.
         /// </summary>
-        public ConverterPriority Priority => ConverterPriority.First;
+        public ConverterPriority Priority => ConverterPriority.Default;
 
         /// <summary>
         ///     Determines whether this instance can convert the specified type.
@@ -51,18 +55,18 @@ namespace ConsoleExtensions.Commandline.Converters
         /// <returns><c>true</c> if this instance can convert the specified type; otherwise, <c>false</c>.</returns>
         public bool CanConvert(Type type)
         {
-            return type == typeof(T);
+            return type == typeof(bool);
         }
 
         /// <summary>
-        ///     Returns a <see cref="System.String" /> that represents the source.
+        ///     Returns a <see cref="System.String" /> that represents this instance.
         /// </summary>
         /// <param name="source">The source.</param>
         /// <param name="customAttributeProvider">The custom attribute provider.</param>
         /// <returns>A <see cref="System.String" /> that represents this instance.</returns>
         public string ConvertToString(object source, ICustomAttributeProvider customAttributeProvider)
         {
-            return this.toString(source);
+            return source.ToString();
         }
 
         /// <summary>
@@ -72,9 +76,20 @@ namespace ConsoleExtensions.Commandline.Converters
         /// <param name="type">The type.</param>
         /// <param name="customAttributeProvider">The custom attribute provider.</param>
         /// <returns>A object of the specified type.</returns>
+        /// <exception cref="ArgumentException">Thrown if the conversion was not a success.</exception>
         public object ConvertToValue(string source, Type type, ICustomAttributeProvider customAttributeProvider)
         {
-            return this.toValue(source);
+            if (source == null)
+            {
+                return true;
+            }
+
+            if (ValueMapper.TryGetValue(source, out var result))
+            {
+                return result;
+            }
+
+            throw new ArgumentException();
         }
     }
 }
