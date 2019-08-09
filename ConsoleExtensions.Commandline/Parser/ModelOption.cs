@@ -58,7 +58,6 @@ namespace ConsoleExtensions.Commandline.Parser
         /// <returns>A string representing the value.</returns>
         public object CurrentValue()
         {
-            // TODO : catch all the exceptions that can occur and map them
             return this.Property.GetMethod.Invoke(this.Source, new object[0]);
         }
 
@@ -68,7 +67,6 @@ namespace ConsoleExtensions.Commandline.Parser
         /// <param name="value">The value.</param>
         public void Set(object value)
         {
-            // TODO : catch all the exceptions that can occur and map them
             this.Property.SetMethod.Invoke(this.Source, new[] { value });
         }
     }
