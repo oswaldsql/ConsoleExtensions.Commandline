@@ -1,4 +1,11 @@
-﻿// ReSharper disable StyleCop.SA1600
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="DotNetCliMock.cs" company="Lasse Sjørup">
+//   Copyright (c) 2019 Lasse Sjørup
+//   Licensed under the MIT license. See LICENSE file in the solution root for full license information.
+// </copyright>
+// --------------------------------------------------------------------------------------------------------------------
+
+// ReSharper disable StyleCop.SA1600
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedParameter.Global
 // ReSharper disable StyleCop.SA1201

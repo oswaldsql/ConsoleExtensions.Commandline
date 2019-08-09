@@ -36,7 +36,7 @@ namespace ConsoleExtensions.Commandline.Tests
 
             return x.Name == y.Name && x.DisplayName == y.DisplayName && x.Description == y.Description
                    && x.Optional == y.Optional && x.Type == y.Type
-                   && ((x.DefaultValue == null && y.DefaultValue == null) || x.DefaultValue.Equals(y.DefaultValue));
+                   && ((x.DefaultValue == null || y.DefaultValue == null) || x.DefaultValue.Equals(y.DefaultValue));
         }
 
         /// <summary>

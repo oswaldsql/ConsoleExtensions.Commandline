@@ -22,8 +22,7 @@ namespace ConsoleExtensions.Commandline
     using ConsoleExtensions.Templating;
 
     /// <summary>
-    ///     Class Controller. Takes a object and presents is as a command line
-    ///     interface.
+    ///     Class Controller. Takes a object and presents is as a command line interface.
     /// </summary>
     public class Controller
     {
@@ -41,9 +40,20 @@ namespace ConsoleExtensions.Commandline
         ///     console. Is not specified the Default setup is applied.
         /// </param>
         public Controller(object model, Action<Controller> setup = null)
+            : this(model, ConsoleProxy.Instance(), setup)
+        {
+        }
+
+        /// <summary>
+        ///     Initializes a new instance of the Controller class.
+        /// </summary>
+        /// <param name="model">The model.</param>
+        /// <param name="proxy">The proxy.</param>
+        /// <param name="setup">The setup. Optional overwrite of the extensions added to the console. Is not specified the Default setup is applied.</param>
+        internal Controller(object model, IConsoleProxy proxy, Action<Controller> setup = null)
         {
             this.Model = model;
-            this.Proxy = ConsoleProxy.Instance();
+            this.Proxy = proxy;
             this.TemplateParser = new TemplateParser();
 
             this.ModelMap = ModelParser.Parse(this.Model);
@@ -78,13 +88,7 @@ namespace ConsoleExtensions.Commandline
         public TemplateParser TemplateParser { get; }
 
         /// <summary>
-        ///     <para>
-        ///         Instantiates a new controller with the <paramref name="model" />
-        ///     </para>
-        ///     <para>
-        ///         and standard <paramref name="setup" /> and runs the arguments
-        ///         against the model.
-        ///     </para>
+        ///     Instantiates a new controller with the model and standard setup and runs the arguments      against the model.
         /// </summary>
         /// <param name="model">The model.</param>
         /// <param name="args">The arguments.</param>
@@ -102,9 +106,12 @@ namespace ConsoleExtensions.Commandline
         ///     Runs the specified arguments against the controllers model.
         /// </summary>
         /// <param name="args">The arguments.</param>
-        public void Run(string[] args = null)
+        public void Run(params string[] args)
         {
-            args = args ?? Environment.GetCommandLineArgs().Skip(1).ToArray();
+            if (args.Length == 0)
+            {
+                args = Environment.GetCommandLineArgs().Skip(1).ToArray();
+            }
 
             try
             {

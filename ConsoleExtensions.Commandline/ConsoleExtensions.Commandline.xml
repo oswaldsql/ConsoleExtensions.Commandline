@@ -56,8 +56,7 @@
         </member>
         <member name="T:ConsoleExtensions.Commandline.Controller">
             <summary>
-                Class Controller. Takes a object and presents is as a command line
-                interface.
+                Class Controller. Takes a object and presents is as a command line interface.
             </summary>
         </member>
         <member name="F:ConsoleExtensions.Commandline.Controller.resultTemplate">
@@ -74,6 +73,14 @@
                 The setup. Optional overwrite of the extensions added to the
                 console. Is not specified the Default setup is applied.
             </param>
+        </member>
+        <member name="M:ConsoleExtensions.Commandline.Controller.#ctor(System.Object,ConsoleExtensions.Proxy.IConsoleProxy,System.Action{ConsoleExtensions.Commandline.Controller})">
+            <summary>
+                Initializes a new instance of the Controller class.
+            </summary>
+            <param name="model">The model.</param>
+            <param name="proxy">The proxy.</param>
+            <param name="setup">The setup. Optional overwrite of the extensions added to the console. Is not specified the Default setup is applied.</param>
         </member>
         <member name="P:ConsoleExtensions.Commandline.Controller.Model">
             <summary>
@@ -99,13 +106,7 @@
         </member>
         <member name="M:ConsoleExtensions.Commandline.Controller.Run(System.Object,System.String[],System.Action{ConsoleExtensions.Commandline.Controller})">
             <summary>
-                <para>
-                    Instantiates a new controller with the <paramref name="model" />
-                </para>
-                <para>
-                    and standard <paramref name="setup" /> and runs the arguments
-                    against the model.
-                </para>
+                Instantiates a new controller with the model and standard setup and runs the arguments      against the model.
             </summary>
             <param name="model">The model.</param>
             <param name="args">The arguments.</param>
