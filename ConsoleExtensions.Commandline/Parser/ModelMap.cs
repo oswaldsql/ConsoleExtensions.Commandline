@@ -11,6 +11,8 @@ namespace ConsoleExtensions.Commandline.Parser
     using System.Collections.Generic;
     using System.Linq;
     using System.Reflection;
+    using System.Threading;
+    using System.Threading.Tasks;
 
     using ConsoleExtensions.Commandline.Converters;
     using ConsoleExtensions.Commandline.Converters.Custom;
@@ -23,6 +25,8 @@ namespace ConsoleExtensions.Commandline.Parser
     /// </summary>
     public class ModelMap
     {
+        static TaskFactory taskFactory = new TaskFactory(CancellationToken.None, TaskCreationOptions.None, TaskContinuationOptions.None, TaskScheduler.Default);
+
         /// <summary>
         ///     The value converters used to convert from string to objects and back.
         /// </summary>
@@ -72,7 +76,18 @@ namespace ConsoleExtensions.Commandline.Parser
         /// <returns>The ModelMap.</returns>
         public ModelMap AddCommand(ModelCommand command)
         {
-            this.Commands.Add(command.Name, command);
+            var commandName = command.Name;
+
+            if (commandName.EndsWith("Async"))
+            {
+                var type = command.Method.ReturnParameter.ParameterType;
+                if (type == typeof(Task) || type.IsSubclassOf(typeof(Task)))
+                {
+                    commandName = commandName.Substring(0, commandName.Length - 5);
+                }
+            }
+
+            this.Commands.Add(commandName, command);
             return this;
         }
 
@@ -221,7 +236,26 @@ namespace ConsoleExtensions.Commandline.Parser
             }
 
             // TODO : catch all the exceptions that can occur and map them
-            return method.Method.Invoke(method.Source, p.ToArray());
+            var result = method.Method.Invoke(method.Source, p.ToArray());
+
+            if (result.GetType().IsSubclassOf(typeof(Task)))
+            {
+                var task = (Task)result;
+                {
+                    taskFactory.StartNew(() => task).Unwrap().GetAwaiter().GetResult();
+
+                    if (method.Method.ReturnType == typeof(Task))
+                    {
+                        result = null;
+                    }
+                    else
+                    {
+                        result = task.GetType().GetProperty("Result").GetValue(task);
+                    }
+                }
+            }
+
+            return result;
         }
 
         /// <summary>
