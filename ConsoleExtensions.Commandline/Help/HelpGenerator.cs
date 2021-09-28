@@ -11,7 +11,6 @@ namespace ConsoleExtensions.Commandline.Help
     using System.ComponentModel;
     using System.Linq;
     using System.Reflection;
-
     using JetBrains.Annotations;
 
     /// <summary>
@@ -56,27 +55,26 @@ namespace ConsoleExtensions.Commandline.Help
                 if (map.Commands.TryGetValue(topic, out var command))
                 {
                     var details = new UsageDetails
-                                      {
-                                          Name = command.Name,
-                                          DisplayName = command.DisplayName,
-                                          Description = command.Description,
-                                          ReturnType = command.Method.ReturnType.Name,
-                                          Arguments = command.Method.GetParameters().Select(this.Map).ToArray()
-                                      };
+                    {
+                        Name = command.Name,
+                        DisplayName = command.DisplayName,
+                        Description = command.Description,
+                        ReturnType = command.Method.ReturnType.Name,
+                        Arguments = command.Method.GetParameters().Select(this.Map).ToArray(),
+                    };
 
                     helpDetails.Usage = details;
                     helpDetails.Options = map.Options.Values.ToArray();
                 }
-                else
-                if (map.Options.TryGetValue(topic, out var option))
+                else if (map.Options.TryGetValue(topic, out var option))
                 {
                     var details = new UsageDetails
-                                      {
-                                          Name = option.Name,
-                                          DisplayName = option.DisplayName,
-                                          Description = option.Description,
-                                          ReturnType = option.Property.PropertyType.Name,
-                                      };
+                    {
+                        Name = option.Name,
+                        DisplayName = option.DisplayName,
+                        Description = option.Description,
+                        ReturnType = option.Property.PropertyType.Name,
+                    };
 
                     helpDetails.Usage = details;
                     helpDetails.Options = map.Options.Values.ToArray();
@@ -133,14 +131,14 @@ namespace ConsoleExtensions.Commandline.Help
         private ArgumentDetails Map(ParameterInfo arg)
         {
             var result = new ArgumentDetails
-                             {
-                                 Name = arg.Name,
-                                 DisplayName = arg.GetCustomAttribute<DisplayNameAttribute>()?.DisplayName,
-                                 Description = arg.GetCustomAttribute<DescriptionAttribute>()?.Description,
-                                 Optional = arg.HasDefaultValue,
-                                 DefaultValue = arg.HasDefaultValue ? arg.DefaultValue : null,
-                                 Type = arg.ParameterType.Name
-                             };
+            {
+                Name = arg.Name,
+                DisplayName = arg.GetCustomAttribute<DisplayNameAttribute>()?.DisplayName,
+                Description = arg.GetCustomAttribute<DescriptionAttribute>()?.Description,
+                Optional = arg.HasDefaultValue,
+                DefaultValue = arg.HasDefaultValue ? arg.DefaultValue : null,
+                Type = arg.ParameterType.Name,
+            };
 
             return result;
         }

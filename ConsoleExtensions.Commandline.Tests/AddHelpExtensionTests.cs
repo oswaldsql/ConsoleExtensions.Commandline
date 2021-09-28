@@ -9,9 +9,8 @@ namespace ConsoleExtensions.Commandline.Tests
 {
     using System.ComponentModel;
     using System.Linq;
-
-    using ConsoleExtensions.Commandline.Help;
-
+    using System.Threading.Tasks;
+    using Help;
     using Xunit;
 
     /// <summary>
@@ -82,19 +81,19 @@ namespace ConsoleExtensions.Commandline.Tests
             Assert.Equal(2, usage.Arguments.Length);
 
             var first = usage.Arguments.First();
-            var firstExpected = new ArgumentDetails { Name = "argument", Type = "String" };
+            var firstExpected = new ArgumentDetails {Name = "argument", Type = "String"};
             Assert.Equal(firstExpected, first, new DetailsComparer());
 
             var second = usage.Arguments[1];
             var secondExpected = new ArgumentDetails
-                                     {
-                                         Name = "optional",
-                                         Type = "String",
-                                         DisplayName = null,
-                                         Description = "Some description",
-                                         Optional = true,
-                                         DefaultValue = "default"
-                                     };
+            {
+                Name = "optional",
+                Type = "String",
+                DisplayName = null,
+                Description = "Some description",
+                Optional = true,
+                DefaultValue = "default",
+            };
 
             Assert.Equal(secondExpected, second, new DetailsComparer());
         }
@@ -190,6 +189,23 @@ namespace ConsoleExtensions.Commandline.Tests
             Assert.Contains(actual.Options, option => option.Name == "Option");
         }
 
+        [Fact]
+        public void GivenAsyncMethods_WhenGettingHelp_MethodIsShownWithoutAsync()
+        {
+            // Arrange
+            var controller = new Controller(new Mock(), c => c.AddHelp());
+
+            // Act
+            var actual = controller.ModelMap.Invoke("Help") as HelpDetails;
+
+            // Assert
+            var helpGet = Assert.Single(actual.Commands.Where(t => t.Method.Name == nameof(Mock.GetAsync)));
+            Assert.Equal("Get", helpGet.Name);
+            var helpGetWithReturn =
+                Assert.Single(actual.Commands.Where(t => t.Method.Name == nameof(Mock.GetReturnValueAsync)));
+            Assert.Equal("GetReturnValue", helpGetWithReturn.Name);
+        }
+
         /// <summary>
         ///     Class ClassWithExistingHelp.
         /// </summary>
@@ -235,10 +251,25 @@ namespace ConsoleExtensions.Commandline.Tests
             /// </returns>
             public string Command(
                 string argument,
-                [Description("Some description")]
-                string optional = "default")
+                [Description("Some description")] string optional = "default")
             {
                 return argument;
+            }
+
+            /// <summary>
+            ///     Gets the asynchronous.
+            /// </summary>
+            /// <returns>   A Task. </returns>
+            public Task GetAsync()
+            {
+                return Task.CompletedTask;
+            }
+
+            /// <summary>   Gets return value asynchronous. </summary>
+            /// <returns>   The return value. </returns>
+            public Task<string> GetReturnValueAsync()
+            {
+                return Task.FromResult("Test");
             }
         }
     }

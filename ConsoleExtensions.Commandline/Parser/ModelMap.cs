@@ -13,7 +13,6 @@ namespace ConsoleExtensions.Commandline.Parser
     using System.Reflection;
     using System.Threading;
     using System.Threading.Tasks;
-
     using ConsoleExtensions.Commandline.Converters;
     using ConsoleExtensions.Commandline.Converters.Custom;
     using ConsoleExtensions.Commandline.Exceptions;
@@ -25,7 +24,8 @@ namespace ConsoleExtensions.Commandline.Parser
     /// </summary>
     public class ModelMap
     {
-        static TaskFactory taskFactory = new TaskFactory(CancellationToken.None, TaskCreationOptions.None, TaskContinuationOptions.None, TaskScheduler.Default);
+        private static readonly TaskFactory TaskFactory = new TaskFactory(CancellationToken.None,
+            TaskCreationOptions.None, TaskContinuationOptions.None, TaskScheduler.Default);
 
         /// <summary>
         ///     The value converters used to convert from string to objects and back.
@@ -166,7 +166,7 @@ namespace ConsoleExtensions.Commandline.Parser
             // TODO : support multiple values.
             if (this.Options.TryGetValue(option, out var p))
             {
-                return new[] { this.ConvertObjectToString(p.CurrentValue(), p.Property.PropertyType, p.Property) };
+                return new[] {this.ConvertObjectToString(p.CurrentValue(), p.Property.PropertyType, p.Property)};
             }
 
             throw new UnknownOptionException(option, this.Options.Values);
@@ -186,7 +186,6 @@ namespace ConsoleExtensions.Commandline.Parser
         ///     type.
         /// </exception>
         /// <exception cref="ArgumentException">Unable to convert type</exception>
-        /// <exception cref="System.ArgumentException">Thrown is the command in not known.</exception>
         public object Invoke(string command, params string[] arguments)
         {
             if (!this.Commands.TryGetValue(command, out var method))
@@ -240,9 +239,9 @@ namespace ConsoleExtensions.Commandline.Parser
 
             if (result.GetType().IsSubclassOf(typeof(Task)))
             {
-                var task = (Task)result;
+                var task = (Task) result;
                 {
-                    taskFactory.StartNew(() => task).Unwrap().GetAwaiter().GetResult();
+                    TaskFactory.StartNew(() => task).Unwrap().GetAwaiter().GetResult();
 
                     if (method.Method.ReturnType == typeof(Task))
                     {
@@ -294,7 +293,7 @@ namespace ConsoleExtensions.Commandline.Parser
         /// <param name="type">The type.</param>
         /// <param name="customAttributeProvider">The custom attribute provider.</param>
         /// <returns>A string representing the object.</returns>
-        /// <exception cref="ArgumentException">Unable to convert type</exception>
+        /// <exception cref="ArgumentException">Unable to convert type.</exception>
         private string ConvertObjectToString(object value, Type type, ICustomAttributeProvider customAttributeProvider)
         {
             string result;
@@ -326,7 +325,7 @@ namespace ConsoleExtensions.Commandline.Parser
         /// <param name="type">The type.</param>
         /// <param name="customAttributeProvider">The custom attribute provider.</param>
         /// <returns>Converts a string to the specified object type.</returns>
-        /// <exception cref="ArgumentException">Unable to convert type</exception>
+        /// <exception cref="ArgumentException">Unable to convert type.</exception>
         private object ConvertStringToObject(
             string stringValue,
             Type type,

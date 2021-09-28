@@ -5,22 +5,20 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
+using System;
+using System.Linq;
 using System.Runtime.CompilerServices;
+using ConsoleExtensions.Commandline.Arguments;
+using ConsoleExtensions.Commandline.Exceptions;
+using ConsoleExtensions.Commandline.Help;
+using ConsoleExtensions.Commandline.Parser;
+using ConsoleExtensions.Proxy;
+using ConsoleExtensions.Templating;
 
 [assembly: InternalsVisibleTo("ConsoleExtensions.Commandline.Tests")]
 
 namespace ConsoleExtensions.Commandline
 {
-    using System;
-    using System.Linq;
-
-    using ConsoleExtensions.Commandline.Arguments;
-    using ConsoleExtensions.Commandline.Exceptions;
-    using ConsoleExtensions.Commandline.Help;
-    using ConsoleExtensions.Commandline.Parser;
-    using ConsoleExtensions.Proxy;
-    using ConsoleExtensions.Templating;
-
     /// <summary>
     ///     Class Controller. Takes a object and presents is as a command line interface.
     /// </summary>
@@ -32,12 +30,13 @@ namespace ConsoleExtensions.Commandline
         private readonly Template resultTemplate;
 
         /// <summary>
-        ///     Initializes a new instance of the Controller class.
+        ///     Initializes a new instance of the <see cref="Controller" /> class.
         /// </summary>
-        /// <param name="model">The model.</param>
+        /// <param name="model">    The model. </param>
         /// <param name="setup">
-        ///     The setup. Optional overwrite of the extensions added to the
-        ///     console. Is not specified the Default setup is applied.
+        ///     (Optional)
+        ///     The setup. Optional overwrite of the extensions added to the console. Is not specified
+        ///     the Default setup is applied.
         /// </param>
         public Controller(object model, Action<Controller> setup = null)
             : this(model, ConsoleProxy.Instance(), setup)
@@ -45,11 +44,14 @@ namespace ConsoleExtensions.Commandline
         }
 
         /// <summary>
-        ///     Initializes a new instance of the Controller class.
+        ///     Initializes a new instance of the <see cref="Controller" /> class.
         /// </summary>
         /// <param name="model">The model.</param>
         /// <param name="proxy">The proxy.</param>
-        /// <param name="setup">The setup. Optional overwrite of the extensions added to the console. Is not specified the Default setup is applied.</param>
+        /// <param name="setup">
+        ///     The setup. Optional overwrite of the extensions added to the console. Is not specified the Default
+        ///     setup is applied.
+        /// </param>
         internal Controller(object model, IConsoleProxy proxy, Action<Controller> setup = null)
         {
             this.Model = model;
@@ -117,7 +119,7 @@ namespace ConsoleExtensions.Commandline
             {
                 if (args.Length == 0)
                 {
-                    args = new[] { "Help" };
+                    args = new[] { "Help", };
                 }
 
                 var arguments = ArgumentParser.Parse(args);

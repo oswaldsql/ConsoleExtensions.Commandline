@@ -38,7 +38,7 @@ namespace ConsoleExtensions.Commandline.Tests
             // Assert
             Assert.Contains(actual.Commands, pair => pair.Key == "VoidTask");
             var command = actual.Commands["VoidTask"];
-            Assert.Equal("VoidTaskAsync", command.Name);
+            Assert.Equal("VoidTask", command.Name);
             Assert.Equal("VoidTaskAsync", command.Method.Name);
         }
 
@@ -59,7 +59,7 @@ namespace ConsoleExtensions.Commandline.Tests
             // Assert
             Assert.Contains(actual.Commands, pair => pair.Key == "StringTask");
             var command = actual.Commands["StringTask"];
-            Assert.Equal("StringTaskAsync", command.Name);
+            Assert.Equal("StringTask", command.Name);
             Assert.Equal("StringTaskAsync", command.Method.Name);
         }
 

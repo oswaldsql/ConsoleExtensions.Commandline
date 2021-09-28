@@ -12,6 +12,7 @@ namespace ConsoleExtensions.Commandline.Parser
     using System.Linq;
     using System.Reflection;
     using System.Text.RegularExpressions;
+    using System.Threading.Tasks;
 
     /// <summary>
     ///     Class ModelParser. Parses a object and returns a model map representing that object.
@@ -52,13 +53,23 @@ namespace ConsoleExtensions.Commandline.Parser
 
             foreach (var method in methodInfos)
             {
-                var action = new ModelCommand(method.Name, method, model)
-                                 {
-                                     DisplayName =
-                                         method.GetCustomAttribute<DisplayNameAttribute>()?.DisplayName
-                                         ?? CreateFriendlyName(method.Name),
-                                     Description = method.GetCustomAttribute<DescriptionAttribute>()?.Description
-                                 };
+                var methodName = method.Name;
+
+                if (methodName.EndsWith("Async") && methodName.Length > 5)
+                {
+                    if (method.ReturnType == typeof(Task) || method.ReturnType.BaseType == typeof(Task))
+                    {
+                        methodName = methodName.Substring(0, methodName.Length - 5);
+                    }
+                }
+
+                var action = new ModelCommand(methodName, method, model)
+                {
+                    DisplayName =
+                        method.GetCustomAttribute<DisplayNameAttribute>()?.DisplayName
+                        ?? CreateFriendlyName(methodName),
+                    Description = method.GetCustomAttribute<DescriptionAttribute>()?.Description,
+                };
 
                 yield return action;
             }
@@ -76,19 +87,19 @@ namespace ConsoleExtensions.Commandline.Parser
             foreach (var info in propertyInfos.Where(t => t.GetMethod.GetParameters().Length == 0))
             {
                 var flag = new ModelOption(info.Name, info, model)
-                               {
-                                   DisplayName =
-                                       info.GetCustomAttribute<DisplayNameAttribute>()?.DisplayName
-                                       ?? CreateFriendlyName(info.Name),
-                                   Description = info.GetCustomAttribute<DescriptionAttribute>()?.Description
-                               };
+                {
+                    DisplayName =
+                        info.GetCustomAttribute<DisplayNameAttribute>()?.DisplayName
+                        ?? CreateFriendlyName(info.Name),
+                    Description = info.GetCustomAttribute<DescriptionAttribute>()?.Description,
+                };
 
                 yield return flag;
             }
         }
 
         /// <summary>
-        /// Creates a friendly name from a method name.
+        ///     Creates a friendly name from a method name.
         /// </summary>
         /// <param name="name">The name.</param>
         /// <returns>The friendly name.</returns>
