@@ -65,7 +65,7 @@ namespace ConsoleExtensions.Commandline.Demo
         public string VersionSuffix { get; set; }
 
         [Description("Build a .NET project.")]
-        public string Build([DisplayName("Project file"), Description("The project file to operate on. If a file is not specified, the command will search the current directory for one")]string project = "", bool debug = false, int fds = 43)
+        public string Build([Description("The project file to operate on. If a file is not specified, the command will search the current directory for one")]string project = "", bool debug = false, int fds = 43)
         {
             return "Mocking a build";
         }

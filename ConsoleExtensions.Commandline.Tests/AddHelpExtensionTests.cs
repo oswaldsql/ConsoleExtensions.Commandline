@@ -90,11 +90,12 @@ namespace ConsoleExtensions.Commandline.Tests
                                      {
                                          Name = "optional",
                                          Type = "String",
-                                         DisplayName = "Optional value",
+                                         DisplayName = null,
                                          Description = "Some description",
                                          Optional = true,
                                          DefaultValue = "default"
                                      };
+
             Assert.Equal(secondExpected, second, new DetailsComparer());
         }
 
@@ -234,7 +235,7 @@ namespace ConsoleExtensions.Commandline.Tests
             /// </returns>
             public string Command(
                 string argument,
-                [DisplayName("Optional value")] [Description("Some description")]
+                [Description("Some description")]
                 string optional = "default")
             {
                 return argument;
