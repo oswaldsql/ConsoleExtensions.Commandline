@@ -1050,7 +1050,7 @@
             <returns>Zero or more values representing the value of the option.</returns>
             <exception cref="T:ConsoleExtensions.Commandline.Exceptions.UnknownOptionException">Thrown is the requested option is unknown.</exception>
         </member>
-        <member name="M:ConsoleExtensions.Commandline.Parser.ModelMap.Invoke(System.String,System.String[])">
+        <member name="M:ConsoleExtensions.Commandline.Parser.ModelMap.Invoke(System.String,System.Threading.CancellationToken,System.String[])">
             <summary>
                 Invokes the specified command.
             </summary>

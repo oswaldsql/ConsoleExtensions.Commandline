@@ -84,6 +84,8 @@ namespace ConsoleExtensions.Commandline.Parser
                 if (type == typeof(Task) || type.IsSubclassOf(typeof(Task)))
                 {
                     commandName = commandName.Substring(0, commandName.Length - 5);
+                    command = new ModelCommand(commandName, command.Method, command.Source)
+                        { Description = command.Description, DisplayName = command.DisplayName };
                 }
             }
 
@@ -172,6 +174,9 @@ namespace ConsoleExtensions.Commandline.Parser
             throw new UnknownOptionException(option, this.Options.Values);
         }
 
+        public object Invoke(string command, params string[] arguments) =>
+            Invoke(command, CancellationToken.None, arguments);
+
         /// <summary>
         ///     Invokes the specified command.
         /// </summary>
@@ -187,7 +192,7 @@ namespace ConsoleExtensions.Commandline.Parser
         /// </exception>
         /// <exception cref="ArgumentException">Unable to convert type</exception>
         /// <exception cref="System.ArgumentException">Thrown is the command in not known.</exception>
-        public object Invoke(string command, params string[] arguments)
+        public object Invoke(string command, CancellationToken token, params string[] arguments)
         {
             if (!this.Commands.TryGetValue(command, out var method))
             {
@@ -210,6 +215,11 @@ namespace ConsoleExtensions.Commandline.Parser
 
                 if (arguments.Length <= index)
                 {
+                    if (info.ParameterType == typeof(CancellationToken))
+                    {
+                        o = token;
+                    }
+                    else
                     if (info.HasDefaultValue)
                     {
                         o = info.DefaultValue;

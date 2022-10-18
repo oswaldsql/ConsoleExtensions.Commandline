@@ -4,6 +4,10 @@
 //   Licensed under the MIT license. See LICENSE file in the solution root for full license information.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
+
+using System.Threading;
+using System.Threading.Tasks;
+
 namespace ConsoleExtensions.Commandline.Exceptions
 {
     using System;
@@ -21,7 +25,8 @@ namespace ConsoleExtensions.Commandline.Exceptions
         public static Controller AddExceptionHandling(this Controller controller)
         {
             controller.TemplateParser.AddTypeTemplate<ConsoleExtensionException>("[s:error]{Message}[/]");
-            controller.TemplateParser.AddTypeTemplate<Exception>("An unknown exception occured. {Message}");
+            controller.TemplateParser.AddTypeTemplate<Exception>("[s:error]An unknown exception occurred.[br/][/] {Message}");
+            controller.TemplateParser.AddTypeTemplate<TaskCanceledException>("[s:error]The task was canceled by the user.[br/][/]");
 
             return controller;
         }

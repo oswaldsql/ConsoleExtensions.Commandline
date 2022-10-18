@@ -11,15 +11,19 @@ namespace ConsoleExtensions.Commandline.CoreDemo
     [Description("Tools for making life better.")]
     internal class Toolbox
     {
+        [Description("Uses relativistic time for calculating age around the nearest black hole.")]
+        [DisplayName("Relativistic Time")]
+        public bool R { get; set; } = false;
+
         [Description("Sets your age to the specified value.")]
-        public Task<string> SetAgeAsync([Description("The requested age.")]int age)
+        public async Task<string> SetAgeAsync([Description("The requested age.")]int age = 18, CancellationToken token = default)
         {
             if (age < 0)
-                throw new Exception("Setting your age to a negative value will break time and space as we know it");
+                throw new Exception("Setting your age to a negative value will break time and space as we know it.");
 
-            Task.Delay(1000);
+            await Task.Delay(10000, token);
 
-            return Task.FromResult($"Your age is now {age}");
+            return $"Your age is now {age}";
         }
     }
 }

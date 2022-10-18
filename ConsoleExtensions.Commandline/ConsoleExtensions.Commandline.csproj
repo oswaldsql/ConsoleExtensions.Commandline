@@ -27,7 +27,7 @@
     <PackageReference Include="ConsoleExtensions.Proxy" Version="1.0.0" />
     <PackageReference Include="ConsoleExtensions.Proxy.ConsoleImplementation" Version="1.0.0" />
     <PackageReference Include="ConsoleExtensions.Templating" Version="1.0.0" />
-    <PackageReference Include="JetBrains.Annotations" Version="2021.1.0" />
+    <PackageReference Include="JetBrains.Annotations" Version="2022.1.0" />
   </ItemGroup>
 
 </Project>

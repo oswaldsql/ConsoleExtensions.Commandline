@@ -1,9 +1,11 @@
 // --------------------------------------------------------------------------------------------------------------------
-// <copyright file="AddHelpExtensionTests.cs" company="Lasse Sjørup">
-//   Copyright (c) 2019 Lasse Sjørup
+// <copyright file="AddHelpExtensionTests.cs" company="Lasse Sjï¿½rup">
+//   Copyright (c) 2019 Lasse Sjï¿½rup
 //   Licensed under the MIT license. See LICENSE file in the solution root for full license information.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
+
+using System.Threading;
 
 namespace ConsoleExtensions.Commandline.Tests
 {
@@ -90,11 +92,12 @@ namespace ConsoleExtensions.Commandline.Tests
                                      {
                                          Name = "optional",
                                          Type = "String",
-                                         DisplayName = "Optional value",
+                                         DisplayName = null,
                                          Description = "Some description",
                                          Optional = true,
                                          DefaultValue = "default"
                                      };
+
             Assert.Equal(secondExpected, second, new DetailsComparer());
         }
 
@@ -234,7 +237,7 @@ namespace ConsoleExtensions.Commandline.Tests
             /// </returns>
             public string Command(
                 string argument,
-                [DisplayName("Optional value")] [Description("Some description")]
+                [Description("Some description")]
                 string optional = "default")
             {
                 return argument;

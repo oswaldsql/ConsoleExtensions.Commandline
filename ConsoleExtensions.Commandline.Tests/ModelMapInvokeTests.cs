@@ -1,6 +1,6 @@
 // --------------------------------------------------------------------------------------------------------------------
-// <copyright file="ModelMapInvokeTests.cs" company="Lasse Sjørup">
-//   Copyright (c) 2019 Lasse Sjørup
+// <copyright file="ModelMapInvokeTests.cs" company="Lasse Sjï¿½rup">
+//   Copyright (c) 2019 Lasse Sjï¿½rup
 //   Licensed under the MIT license. See LICENSE file in the solution root for full license information.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------

@@ -6,6 +6,7 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 using System.Runtime.CompilerServices;
+using System.Threading;
 
 [assembly: InternalsVisibleTo("ConsoleExtensions.Commandline.Tests")]
 
@@ -129,7 +130,15 @@ namespace ConsoleExtensions.Commandline
                     this.ModelMap.SetOption(argument.Key, argument.Value.ToArray());
                 }
 
-                var result = this.ModelMap.Invoke(arguments.Command, arguments.Arguments);
+                var tokenSource = new CancellationTokenSource();
+
+                Console.CancelKeyPress += (sender, eventArgs) =>
+                {
+                    tokenSource.Cancel();
+                    eventArgs.Cancel = true;
+                };
+
+                var result = this.ModelMap.Invoke(arguments.Command, tokenSource.Token, arguments.Arguments);
 
                 this.Proxy.WriteTemplate(this.resultTemplate, result);
             }
@@ -138,6 +147,7 @@ namespace ConsoleExtensions.Commandline
                 this.Proxy.WriteTemplate(this.resultTemplate, e);
             }
         }
+
 
         /// <summary>
         ///     Applies the default setup to the controller.

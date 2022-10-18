@@ -5,6 +5,8 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
+using System.Threading;
+
 namespace ConsoleExtensions.Commandline.Help
 {
     using System;
@@ -61,7 +63,7 @@ namespace ConsoleExtensions.Commandline.Help
                                           DisplayName = command.DisplayName,
                                           Description = command.Description,
                                           ReturnType = command.Method.ReturnType.Name,
-                                          Arguments = command.Method.GetParameters().Select(this.Map).ToArray()
+                                          Arguments = command.Method.GetParameters().Where(t => !IsHidden(t)).Select(this.Map).ToArray()
                                       };
 
                     helpDetails.Usage = details;
@@ -89,6 +91,11 @@ namespace ConsoleExtensions.Commandline.Help
             }
 
             return helpDetails;
+        }
+
+        private bool IsHidden(ParameterInfo parameterInfo)
+        {
+            return parameterInfo.ParameterType == typeof(CancellationToken);
         }
 
         /// <summary>

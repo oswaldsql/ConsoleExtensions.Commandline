@@ -35,7 +35,7 @@ namespace ConsoleExtensions.Commandline.Help
                 "[c:white]{Major}[/].[c:white]{Minor}[/][if:Build].[c:white]{Build}[if:Revision].[c:white]{Revision}[/][/][/][/]");
 
             controller.TemplateParser.AddTypeTemplate<UsageDetails>(
-                "Usage : {Name}[if:Arguments][foreach:Arguments] [[{Name}][/]"
+                "[hr/]{Name} : {Description}[br/]Usage : {Name}[if:Arguments][foreach:Arguments] [[{Name}][/]"
                 + "[br/][br/]Arguments:[br/][foreach:Arguments] {}[br/][/][/]");
             controller.TemplateParser.AddTypeTemplate<ArgumentDetails>(
                 "<[c:white]{Name}[/]:{Type}> [if:DisplayName]({DisplayName})[/] [if:Optional](Default : '{DefaultValue}') [/][if:Description][br/]  {Description}[/]");
