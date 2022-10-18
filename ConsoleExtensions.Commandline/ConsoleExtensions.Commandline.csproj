@@ -3,13 +3,13 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <Version>0.1.0-Dev</Version>
-    <AssemblyVersion>0.1.0.0</AssemblyVersion>
-    <FileVersion>0.1.0.0</FileVersion>
+    <Version>1.0.1</Version>
+    <AssemblyVersion>1.0.1.0</AssemblyVersion>
+    <FileVersion>1.0.1.0</FileVersion>
     <Authors>Lasse Sjørup</Authors>
     <Company>Lasse Sjørup</Company>
     <Description>Wrap a toolbox object in a command-line interface in just a few lines of code.</Description>
-    <Copyright>Lasse Sjørup 2019</Copyright>
+    <Copyright>Lasse Sjørup 2021</Copyright>
     <PackageLicenseUrl></PackageLicenseUrl>
     <PackageIconUrl>https://github.com/oswaldsql/ConsoleExtensions.Proxy/blob/master/Icon.png?raw=true</PackageIconUrl>
     <PackageProjectUrl>https://github.com/oswaldsql/ConsoleExtensions.Commandline</PackageProjectUrl>
@@ -24,10 +24,10 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="ConsoleExtensions.Proxy" Version="0.1.0-Dev" />
-    <PackageReference Include="ConsoleExtensions.Proxy.ConsoleImplementation" Version="0.1.0-Dev" />
-    <PackageReference Include="ConsoleExtensions.Templating" Version="0.1.0-Dev" />
-    <PackageReference Include="JetBrains.Annotations" Version="2019.1.1" />
+    <PackageReference Include="ConsoleExtensions.Proxy" Version="1.0.0" />
+    <PackageReference Include="ConsoleExtensions.Proxy.ConsoleImplementation" Version="1.0.0" />
+    <PackageReference Include="ConsoleExtensions.Templating" Version="1.0.0" />
+    <PackageReference Include="JetBrains.Annotations" Version="2021.1.0" />
   </ItemGroup>
 
 </Project>

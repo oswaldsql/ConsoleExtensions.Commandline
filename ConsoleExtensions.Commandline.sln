@@ -1,13 +1,15 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.28307.271
+# Visual Studio Version 17
+VisualStudioVersion = 17.3.32929.385
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConsoleExtensions.Commandline", "ConsoleExtensions.Commandline\ConsoleExtensions.Commandline.csproj", "{8F94EF51-66F5-4710-BB3A-B1AA638162B1}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConsoleExtensions.Commandline.Demo", "ConsoleExtensions.Commandline.Demo\ConsoleExtensions.Commandline.Demo.csproj", "{3F87684A-6093-47A2-AC25-F48457F2F4A3}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConsoleExtensions.Commandline.Tests", "ConsoleExtensions.Commandline.Tests\ConsoleExtensions.Commandline.Tests.csproj", "{CBF934E5-E8BB-47EC-843C-D6F4AD984ED7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleExtensions.Commandline.CoreDemo", "ConsoleExtensions.Commandline.CoreDemo\ConsoleExtensions.Commandline.CoreDemo.csproj", "{C7C3F135-45A0-4F22-B0B6-2DFBF5C4739C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,6 +29,10 @@ Global
 		{CBF934E5-E8BB-47EC-843C-D6F4AD984ED7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CBF934E5-E8BB-47EC-843C-D6F4AD984ED7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CBF934E5-E8BB-47EC-843C-D6F4AD984ED7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C7C3F135-45A0-4F22-B0B6-2DFBF5C4739C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C7C3F135-45A0-4F22-B0B6-2DFBF5C4739C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C7C3F135-45A0-4F22-B0B6-2DFBF5C4739C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C7C3F135-45A0-4F22-B0B6-2DFBF5C4739C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
